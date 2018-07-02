@@ -1,0 +1,1063 @@
+[
+  {
+    "pk": 7, 
+    "model": "redistricting.scoredisplay", 
+    "fields": {
+      "owner": 1, 
+      "legislative_body": 1, 
+      "cssclass": "basic_information", 
+      "is_page": false, 
+      "title": "Basic Information",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "redistricting.scoredisplay", 
+    "fields": {
+      "owner": 1, 
+      "legislative_body": 1, 
+      "cssclass": "demographics", 
+      "is_page": false, 
+      "title": "Demographics",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "redistricting.scoredisplay", 
+    "fields": {
+      "owner": 1, 
+      "legislative_body": 1, 
+      "cssclass": "congress_leaderboard", 
+      "is_page": true, 
+      "title": "Congressional Leaderboard - All",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "redistricting.scoredisplay", 
+    "fields": {
+      "owner": 1, 
+      "legislative_body": 1, 
+      "cssclass": "congress_leaderboard", 
+      "is_page": true, 
+      "title": "Congressional Leaderboard - Mine",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "redistricting.scoredisplay", 
+    "fields": {
+      "owner": 1, 
+      "legislative_body": 2, 
+      "cssclass": "statehouse_leaderboard", 
+      "is_page": true, 
+      "title": "State House Leaderboard - All",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "redistricting.scoredisplay", 
+    "fields": {
+      "owner": 1, 
+      "legislative_body": 2, 
+      "cssclass": "statehouse_leaderboard", 
+      "is_page": true, 
+      "title": "State House Leaderboard - Mine",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "redistricting.scoredisplay", 
+    "fields": {
+      "owner": 1, 
+      "legislative_body": 3, 
+      "cssclass": "statesenate_leaderboard", 
+      "is_page": true, 
+      "title": "State Senate Leaderboard - All",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "redistricting.scoredisplay", 
+    "fields": {
+      "owner": 1, 
+      "legislative_body": 3, 
+      "cssclass": "statesenate_leaderboard", 
+      "is_page": true, 
+      "title": "State Senate Leaderboard - Mine",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Representational Fairness", 
+      "displays": [], 
+      "template": "leaderboard_panel_mine.html", 
+      "position": 4, 
+      "cssclass": "repfairness", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Equipopulation", 
+      "displays": [], 
+      "template": "leaderboard_panel_all.html", 
+      "position": 1, 
+      "cssclass": "equipop", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Equipopulation", 
+      "displays": [], 
+      "template": "leaderboard_panel_mine.html", 
+      "position": 1, 
+      "cssclass": "equipop", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": false, 
+      "title": "Average Compactness", 
+      "displays": [], 
+      "template": "leaderboard_panel_all.html", 
+      "position": 2, 
+      "cssclass": "avgcompact", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": false, 
+      "title": "Average Compactness", 
+      "displays": [], 
+      "template": "leaderboard_panel_mine.html", 
+      "position": 2, 
+      "cssclass": "avgcompact", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Competitiveness", 
+      "displays": [], 
+      "template": "leaderboard_panel_all.html", 
+      "position": 3, 
+      "cssclass": "competitiveness", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Competitiveness", 
+      "displays": [], 
+      "template": "leaderboard_panel_mine.html", 
+      "position": 3, 
+      "cssclass": "competitiveness", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Representational Fairness", 
+      "displays": [], 
+      "template": "leaderboard_panel_all.html", 
+      "position": 4, 
+      "cssclass": "repfairness", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Equipopulation", 
+      "displays": [], 
+      "template": "leaderboard_panel_all.html", 
+      "position": 1, 
+      "cssclass": "equipop", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": false, 
+      "title": "Average Compactness", 
+      "displays": [], 
+      "template": "leaderboard_panel_all.html", 
+      "position": 2, 
+      "cssclass": "avgcompact", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Competitiveness", 
+      "displays": [], 
+      "template": "leaderboard_panel_all.html", 
+      "position": 3, 
+      "cssclass": "competitiveness", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Representational Fairness", 
+      "displays": [], 
+      "template": "leaderboard_panel_all.html", 
+      "position": 4, 
+      "cssclass": "repfairness", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Equipopulation", 
+      "displays": [], 
+      "template": "leaderboard_panel_mine.html", 
+      "position": 1, 
+      "cssclass": "equipop", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": false, 
+      "title": "Average Compactness", 
+      "displays": [], 
+      "template": "leaderboard_panel_mine.html", 
+      "position": 2, 
+      "cssclass": "avgcompact", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Competitiveness", 
+      "displays": [], 
+      "template": "leaderboard_panel_mine.html", 
+      "position": 3, 
+      "cssclass": "competitiveness", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Representational Fairness", 
+      "displays": [], 
+      "template": "leaderboard_panel_mine.html", 
+      "position": 4, 
+      "cssclass": "repfairness", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Equipopulation", 
+      "displays": [], 
+      "template": "leaderboard_panel_all.html", 
+      "position": 1, 
+      "cssclass": "equipop", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": false, 
+      "title": "Average Compactness", 
+      "displays": [], 
+      "template": "leaderboard_panel_all.html", 
+      "position": 2, 
+      "cssclass": "avgcompact", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Competitiveness", 
+      "displays": [], 
+      "template": "leaderboard_panel_all.html", 
+      "position": 3, 
+      "cssclass": "competitiveness", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Representational Fairness", 
+      "displays": [], 
+      "template": "leaderboard_panel_all.html", 
+      "position": 4, 
+      "cssclass": "repfairness", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 21, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Equipopulation", 
+      "displays": [], 
+      "template": "leaderboard_panel_mine.html", 
+      "position": 1, 
+      "cssclass": "equipop", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 22, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": false, 
+      "title": "Average Compactness", 
+      "displays": [], 
+      "template": "leaderboard_panel_mine.html", 
+      "position": 2, 
+      "cssclass": "avgcompact", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 23, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Competitiveness", 
+      "displays": [], 
+      "template": "leaderboard_panel_mine.html", 
+      "position": 3, 
+      "cssclass": "competitiveness", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 24, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [], 
+      "is_ascending": true, 
+      "title": "Representational Fairness", 
+      "displays": [], 
+      "template": "leaderboard_panel_mine.html", 
+      "position": 4, 
+      "cssclass": "repfairness", 
+      "type": "plan",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 25, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [
+        12, 
+        1, 
+        11, 
+        5, 
+        8
+      ], 
+      "is_ascending": true, 
+      "title": "Plan Summary", 
+      "displays": [
+        7, 
+        8
+      ], 
+      "template": "plan_summary.html", 
+      "position": 0, 
+      "cssclass": "plan_summary", 
+      "type": "plan_summary",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 27, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [
+        22, 
+        12, 
+        2, 
+        16
+      ], 
+      "is_ascending": true, 
+      "title": "Basic Information", 
+      "displays": [
+        7
+      ], 
+      "template": "basic_information.html", 
+      "position": 1, 
+      "cssclass": "", 
+      "type": "district",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 26, 
+    "model": "redistricting.scorepanel", 
+    "fields": {
+      "score_functions": [
+        18, 
+        19, 
+        17
+      ], 
+      "is_ascending": true, 
+      "title": "Demographics", 
+      "displays": [
+        8
+      ], 
+      "template": "demographics.html", 
+      "position": 1, 
+      "cssclass": "", 
+      "type": "district",
+      "name": ""
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.AllBlocksAssigned", 
+      "is_planscore": true, 
+      "name": "All Blocks Assigned  - Congress" 
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.AllBlocksAssigned", 
+      "is_planscore": true, 
+      "name": "All Blocks Assigned - State House" 
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.AllBlocksAssigned", 
+      "is_planscore": true, 
+      "name": "All Blocks Assigned  - State Senate" 
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.PartisanDifferential", 
+      "is_planscore": true, 
+      "name": "Competitiveness" 
+    }
+  }, 
+  {
+    "pk": 22, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Interval", 
+      "is_planscore": false, 
+      "name": "Congressional Population" 
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Contiguity", 
+      "is_planscore": false, 
+      "name": "Contiguous" 
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Equivalence", 
+      "is_planscore": true, 
+      "name": "Equipopulation" 
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Sum", 
+      "is_planscore": false, 
+      "name": "Hispanic voting-age population" 
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.MajorityMinority", 
+      "is_planscore": true, 
+      "name": "Minority Majority" 
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Contiguity", 
+      "is_planscore": false, 
+      "name": "Noncontiguous" 
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Sum", 
+      "is_planscore": false, 
+      "name": "Partisan Index" 
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.RepresentationalFairness", 
+      "is_planscore": true, 
+      "name": "Representational Fairness" 
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Schwartzberg", 
+      "is_planscore": true, 
+      "name": "Schwartzberg" 
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Sum", 
+      "is_planscore": false, 
+      "name": "Total Population" 
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.CountDistricts", 
+      "is_planscore": true, 
+      "name": "Valid Count - Congress" 
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.CountDistricts", 
+      "is_planscore": true, 
+      "name": "Valid Count - State House" 
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.CountDistricts", 
+      "is_planscore": true, 
+      "name": "Valid Count - State Senate" 
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Equipopulation", 
+      "is_planscore": true, 
+      "name": "Valid Population - Congress" 
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Equipopulation", 
+      "is_planscore": true, 
+      "name": "Valid Population - State House" 
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Equipopulation", 
+      "is_planscore": true, 
+      "name": "Valid Population - State Senate" 
+    }
+  }, 
+  {
+    "pk": 23, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Sum", 
+      "is_planscore": false, 
+      "name": "Voting Age Population" 
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "redistricting.scorefunction", 
+    "fields": {
+      "calculator": "redistricting.calculators.Percent", 
+      "is_planscore": false, 
+      "name": "Voting Age Population - Black" 
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 1, 
+      "type": "subject", 
+      "argument": "value", 
+      "value": "poptot"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 3, 
+      "type": "subject", 
+      "argument": "democratic", 
+      "value": "govdem"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 3, 
+      "type": "subject", 
+      "argument": "republican", 
+      "value": "govrep"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 4, 
+      "type": "subject", 
+      "argument": "democratic", 
+      "value": "govdem"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 4, 
+      "type": "subject", 
+      "argument": "republican", 
+      "value": "govrep"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 5, 
+      "type": "literal", 
+      "argument": "target", 
+      "value": "11"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 6, 
+      "type": "literal", 
+      "argument": "target", 
+      "value": "100"
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 7, 
+      "type": "literal", 
+      "argument": "target", 
+      "value": "40"
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 8, 
+      "type": "subject", 
+      "argument": "value", 
+      "value": "poptot"
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 9, 
+      "type": "subject", 
+      "argument": "value", 
+      "value": "poptot"
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 9, 
+      "type": "literal", 
+      "argument": "min", 
+      "value": "76010"
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 9, 
+      "type": "literal", 
+      "argument": "max", 
+      "value": "84011"
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 8, 
+      "type": "literal", 
+      "argument": "min", 
+      "value": "723729"
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 8, 
+      "type": "literal", 
+      "argument": "max", 
+      "value": "731003"
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 10, 
+      "type": "subject", 
+      "argument": "value", 
+      "value": "poptot"
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 10, 
+      "type": "literal", 
+      "argument": "min", 
+      "value": "190025"
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 10, 
+      "type": "literal", 
+      "argument": "max", 
+      "value": "210027"
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 11, 
+      "type": "subject", 
+      "argument": "population", 
+      "value": "poptot"
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 11, 
+      "type": "subject", 
+      "argument": "minority1", 
+      "value": "pophisp"
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 11, 
+      "type": "subject", 
+      "argument": "minority2", 
+      "value": "popblk"
+    }
+  }, 
+  {
+    "pk": 21, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 11, 
+      "type": "subject", 
+      "argument": "minority3", 
+      "value": "popasn"
+    }
+  }, 
+  {
+    "pk": 22, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 11, 
+      "type": "subject", 
+      "argument": "minority4", 
+      "value": "popnam"
+    }
+  }, 
+  {
+    "pk": 23, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 11, 
+      "type": "subject", 
+      "argument": "minority5", 
+      "value": "poppild"
+    }
+  }, 
+  {
+    "pk": 26, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 18, 
+      "type": "subject", 
+      "argument": "value1", 
+      "value": "vaphisp"
+    }
+  }, 
+  {
+    "pk": 27, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 19, 
+      "type": "subject", 
+      "argument": "value1", 
+      "value": "govdem"
+    }
+  }, 
+  {
+    "pk": 28, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 20, 
+      "type": "literal", 
+      "argument": "noncontiguous", 
+      "value": "True"
+    }
+  }, 
+  {
+    "pk": 25, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 17, 
+      "type": "subject", 
+      "argument": "numerator", 
+      "value": "vapblk"
+    }
+  }, 
+  {
+    "pk": 29, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 17, 
+      "type": "subject", 
+      "argument": "denominator", 
+      "value": "vap"
+    }
+  }, 
+  {
+    "pk": 24, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 16, 
+      "type": "subject", 
+      "argument": "value1", 
+      "value": "poptot"
+    }
+  }, 
+  {
+    "pk": 34, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 22, 
+      "type": "subject", 
+      "argument": "subject", 
+      "value": "poptot"
+    }
+  }, 
+  {
+    "pk": 35, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 22, 
+      "type": "literal", 
+      "argument": "target", 
+      "value": "727366"
+    }
+  }, 
+  {
+    "pk": 36, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 22, 
+      "type": "literal", 
+      "argument": "bound1", 
+      "value": ".005"
+    }
+  }, 
+  {
+    "pk": 37, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 22, 
+      "type": "literal", 
+      "argument": "bound2", 
+      "value": ".01"
+    }
+  }, 
+  {
+    "pk": 38, 
+    "model": "redistricting.scoreargument", 
+    "fields": {
+      "function": 23, 
+      "type": "subject", 
+      "argument": "value1", 
+      "value": "vap"
+    }
+  }
+]

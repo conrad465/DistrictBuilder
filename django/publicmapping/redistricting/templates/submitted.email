@@ -1,0 +1,18 @@
+{% comment %}
+This template is used to let a user know when his or her plan
+has been submitted via email for a competition.
+
+Context:
+    user: A django user model representing the user who attempted to create a plan
+    plan: The plan that has been submitted
+
+{% endcomment %}
+{% load i18n %}
+{% autoescape off %}
+{% trans "Hello" %} {{ user.username }},
+
+{% trans "Your plan" %} ("{{ plan.name }}") {% trans "has been successfully submitted. Thank you for your submission." %}
+
+{% trans "Happy Redistricting!" %}
+{% trans "The Public Mapping Team" %}
+{% endautoescape %}

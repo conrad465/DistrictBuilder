@@ -1,0 +1,37 @@
+The Public Mapping Project
+https://github.com/PublicMapping/
+
+== Repository Layout ==
+
+The Public Mapping Project repository contains all the sourcecode necessary
+for deploying a functional redistricting web application. This document
+describes the organization and layout of the project's SVN repository.
+
+root/
+  |
+  +- django/        Contains all program code relevant to the web 
+  |                 application, which is powered by the django framework.
+  |
+  +- docs/          Contains documentation of the Public Mapping Project.
+  |                 This directory contains the project's INSTALL file,
+  |                 which contains information on installation and
+  |                 configuration of the web application. 
+  |
+  |                 The ADDING_LAYERS document describes the process of
+  |                 adding a new set of geography for display and editing.
+  |
+  |                 Automatically generated python class documentation is 
+  |                 saved in the html/ directory. To view the current class
+  |                 documentation, please see:
+  |
+  |                 http://publicmapping.github.com/districtbuilder/docs/1.4/
+  |
+  +- sld/           Contains the style descriptors for the geographic
+  |                 data served up by geoserver. These files are also
+  |                 served up by the web application for display in the
+  |                 map legend.
+  |
+  +- sql/           Contains sql setup scripts for creating the initial
+                    spatial database, in addition to upgrade sql scripts
+                    for migrating old versions of DistrictBuilder to newer
+                    versions.

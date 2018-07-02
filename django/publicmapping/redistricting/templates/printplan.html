@@ -1,0 +1,124 @@
+{% comment %}
+
+   Copyright 2011 Micah Altman, Michael McDonald
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+   This file is part of The Public Mapping Project
+   https://github.com/PublicMapping/
+
+   Purpose:
+       This template is a basic map printing interface.
+
+       This template provides basic printing layout for plans
+
+   Author:
+       Andrew Jennings, David Zwarg, Kenny Shepard
+
+{% endcomment %}
+{% load redistricting_extras %}
+{% load i18n static %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="David Zwarg, Andrew Jennings" />
+    <meta name="copyright" content="&copy; 2011 Micah Altman, Michael McDonald"/>
+    <title>{% trans "Open Source District Mapping Tool" %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/export-print.css' %}"/>
+
+  </head>
+  <body>
+    <div id="pageContent">
+      <table id="container">
+        <tr>
+          <td colspan="2" id="header">
+          <h1>{{ plan.name }} &mdash; {{ plan.legislative_body.name }}</h1>
+          </td>
+        </tr>
+        <tr>
+        <td id="map" rowspan="2">
+          <div id="mapinner">
+            <img src="{{ prefix }}{{ composite }}"/>
+          </div>
+          <div id="osm_attribution">{% trans "Basemap:" %} &copy;<a href="http://openstreetmap.org">OpenStreetMap</a> {% trans "contributors" %}, CC-BY-SA</div>
+
+        </td>
+        <td id="sidebar">
+          <table id="legend" style="">
+            <tr><td id="legendinner">
+               <table class="legend" id="geography-legend" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td class="title" colspan="2">{% trans "Geography:" %} {{ geo_legend_title }}</td>
+                  </tr>
+                {% for litem in geo_legend %}
+                  <tr>
+                    <td class="swatches" style="height:10px; width:40px; background-color:{{litem.fillColor}}; border-width:{{litem.strokeWidth}}px; border-color:{{litem.strokeColor}}; border-style:solid;"><span></span></td>
+                    <td class="values">{{ litem.title }}</td>
+                  </tr>
+                  <tr><td colspan="2" class="filler"></td></tr>
+                {% endfor %}
+                </table>
+                <table class="legend" id="districts-legend" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td class="title" colspan="2">{% trans "Districts:" %} {{ dist_legend_title }}</td>
+                  </tr>
+                {% for litem in dist_legend %}
+                  <tr>
+                    <td class="swatches" style="height:10px; width:40px; background-color:{{litem.fillColor}}; border-width:{{litem.strokeWidth}}px; border-color:{{litem.strokeColor}}; border-style:solid;"><span></span></td>
+                    <td class="values">{{ litem.title }}</td>
+                  </tr>
+                  <tr><td colspan="2" class="filler"></td></tr>
+                {% endfor %}
+                </table>
+            </tr></td>
+          </table>
+         </td>
+         </tr>
+         <tr>
+         <td valign="bottom" id="meta">
+          <table id="author">
+            <tr><td>
+              {% if plan.owner.first_name != '' or plan.owner.last_name != '' %}
+              <div class="label">{% trans "Author:" %}</div>
+              <div class="value">{{plan.owner.first_name}} {{plan.owner.last_name}} ({{ plan.owner.username }})</div>
+              {% else %}
+              <div class="label">{% trans "Author:" %}</div>
+              <div class="value">{{ plan.owner.username }}</div>
+              {% endif %}
+              <div class="label">{% trans "Edited on:" %}</div>
+              <div class="value">{{ plan.edited|date:"SHORT_DATE_FORMAT" }}</div>
+
+              <div class="label">{% trans "Printed on:" %}</div>
+              <div class="value">{{ printed|date:"SHORT_DATE_FORMAT" }}</div>
+            </td></tr>
+          </table>
+
+         <div id="db_attribution">
+            <a target="_blank" href="http://www.districtbuilder.org"><img alt="{% trans "Powered By DistrictBuilder" %}" src="{% static 'images/db_logo_hires.png' %}" width="160"></a>
+            <div id="poweredbytext">
+              {% trans "A project of" %} <a target="_blank" href="http://www.publicmapping.org">PublicMapping.org</a>
+            </div>
+      </div>
+
+
+
+
+      </td>
+      </tr>
+      </table>
+
+  </div>
+  </body>
+</html>

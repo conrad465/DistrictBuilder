@@ -1,0 +1,27 @@
+{% comment %}
+This template is used to let a user know when his or her attempt to create
+a plan has failed.  It should provide a friendly error message to suggest
+a solution to the failed plan creation.
+
+Context:
+    user: A django user model representing the user who attempted to create a plan
+    errors: Any errors that may have occurred. Each error is a dict inculding:
+        message: A friendly error message
+        traceback: A traceback from the exception thrown when the plan was made
+
+{% endcomment %}
+{% load i18n %}
+{% autoescape off %}
+{% trans "Hello" %} {{ user.username }},
+
+{% trans "We apologize for the inconvenience, but your uploaded file was not converted into a plan. There are a few reasons why this might have happened. As best we can tell, your file failed to upload for the following reason:" %}
+
+{% for error in errors %}
+- {{ error.message }}
+
+{% endfor %}
+{% trans "If you correct this issue and upload your file again, we can try again." %}
+
+{% trans "Happy Redistricting!" %}
+{% trans "The Public Mapping Team" %}
+{% endautoescape %}

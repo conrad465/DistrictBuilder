@@ -1,0 +1,490 @@
+The Public Mapping Project
+https://github.com/PublicMapping/
+
+== Prerequisites ==
+
+This software requires a few other pieces of free software to run.  Before 
+you can run the public mapping web site, you'll need to install and 
+configure:
+
+Apache v 2.2
+Geoserver v 2.0.2
+Postgresql v 9.1 w/ PostGIS
+Python v 2.7
+Django v 1.4
+
+On a debian-based system with aptitude installed, you can install most of
+the necessary software using the command:
+
+> sudo aptitude install apache2 libapache2-mod-wsgi python-dev \
+    python-django python-lxml python-gdal python-rpy2 python-scipy \
+    python-psycopg2 python-setuptools postgresql-9.1-postgis \
+    tomcat6 tomcat6-admin gettext redis-server
+
+For python libraries that aren't in the ubuntu repositories, you can
+use pip (a replacement for easy_install) to get secondary python libraries,
+mostly used for background processes:
+
+> sudo easy_install pip
+
+== Additional Packages==
+
+In order to allow recovery of passwords, a mail server is recommended. An
+external mail service provider is recommended, as securing a local mailserver
+against spam is a task best suited to a security expert. If required, the
+application can use a locally running mailserver. 
+
+It is often beneficial to keep your system up to date with security 
+patches. Many standard Linux distributions provide a facility for automatic
+updates, and is not covered in this README.
+
+    NOTE: It is possible that automatic updates may break the DistrictBuilder
+    software if a dependency changes, or if one of the underlying components
+    are upgraded while the application is running. This may result in downtime
+    or loss of data. Use automatic security updates at your own risk.
+
+Running inst_extra.sh will install and configure mail, automatic security 
+update support, and install tmpreaper (for cleaning generated files such
+as reports and downloads) and cron jobs. 
+
+== Installation ==
+
+ 1. Check out the public mapping projects to the /projects directory of 
+    your linux installation.
+
+    > sudo mkdir -p /projects/PublicMapping
+    > cd /projects/PublicMapping
+
+    You can download the PublicMapping source from the website or use git
+    to grab the code
+        
+      
+     a. If you do not have git installed use:
+
+        > sudo apt-get install git
+
+	You can grab the source code from github via the read-only
+	link if you're not going to contribute code back.
+	
+	> git clone git://github.com/PublicMapping/DistrictBuilder.git
+	> cd DistrictBuilder
+
+	Install additional python library requirements.
+
+        > sudo pip install -r requirements.txt
+
+	You may want to switch to a stable tag rather than using the master 
+	branch.  You can see all the availale tags with.
+
+	> git tag -l
+
+	This example switches to v2.0.
+	
+	> git checkout v2.0
+
+     b. If you want to contribute to the project, you should fork the github
+	repository and clone your fork.  You can offer pull requests with
+	your improvements
+
+     c. If you don't have git installed, download the project and 
+        expand it into /projects/PublicMapping.  Change the name of the
+	downloaded folder to DistrictBuilder to be consistent with the
+	rest of this README
+    
+ 2. Create a "local" directory - this is where your machine-specific settings,
+    reports, and data will go:
+
+    > sudo mkdir -p /projects/PublicMapping/local/reports
+    > sudo chown www-data:www-data /projects/PublicMapping/local/reports
+
+ 3. Allow write access by the web user to the locale message files,
+    if you are supporting more than one language. For each language,
+    run:
+
+    > sudo chown www-data:www-data /projects/PublicMapping/DistrictBuilder/django/publicmapping/locale/en/LC_MESSAGES/*o
+
+    Substitute "en" above for the language code that you will support.
+
+ 4. At this point, make sure that you have postgres and postgis 
+    installed.
+
+    You may need to run the postgis install script if you don't have a 
+    postgis template db. Check the postgis site for installation 
+    instructions if you're not familiar with postgis:
+
+       http://postgis.refractions.net/docs/ch02.html
+
+    Note that the aptitude install above will not generate templates. To 
+    generate templates:
+
+    > sudo su postgres 
+    > createdb -E UTF8 -T template0 -l en_US.UTF-8 template_postgis
+    > psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
+    > psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql 
+    > exit
+
+ 5. Once postgis is intalled, run the PublicMapping_db.sql script in 
+    the sql directory:
+
+    > sudo -u postgres psql -f /projects/PublicMapping/DistrictBuilder/sql/publicmapping_db.sql
+
+    This will create a publicmapping db from the template_postgis 
+    template, along with a publicmapping user role.  The publicmapping 
+    user will be assigned all permissions and ownership on the db.
+
+ 6. Make sure your pg_hba file in your postgres configuration allows 
+    password-based authentication on the local machine:
+
+    http://developer.postgresql.org/pgdocs/postgres/auth-pg-hba-conf.html
+
+    You will need a row that looks like this in your pg_hba file:
+    
+        local   all   all   md5
+
+    Put that above the line that reads "local all all ident" so that 
+    password authentication is allowed before user ident authentication
+     
+ 7. Download the datafile to /projects/PublicMapping/data, and unzip into
+    the import directory: /data/:
+
+    > sudo mkdir /projects/PublicMapping/data
+    > cd /projects/PublicMapping/data
+    > sudo wget --no-check-certificate -O VA_data.zip \
+          https://s3.amazonaws.com/districtbuilderdata/VA_data.zip
+    > sudo mkdir /data
+    > cd /data
+    > sudo unzip /projects/PublicMapping/data/VA_data.zip
+
+    *Note* that if you are loading spatial data for a coverage other than
+    the demonstration coverage over Virginia, you will need to ensure that the 
+    spatial reference of the data is "Web Auxiliary Sphere" or "Popular 
+    Visualisation CRS / Mercator". The definition for all GIS software 
+    packages is available here:
+        
+    http://spatialreference.org/ref/epsg/3785/
+
+ 8. Run the setup script with the appropriate parameters - the parts of 
+    the app you want to set up, along with the path to an xsd and a 
+    config.xml file.  
+    
+     a. To get a mostly-configured configuration, copy the distribution
+        configuration to get started.
+
+        > cd /projects/PublicMapping/DistrictBuilder/docs/
+        > sudo cp config.dist.xml config.xml
+
+        Adjust the database connection parameters and server information
+        in the distribution configuration. Many of the other settings
+        should be good enough to start with.
+
+     b. To set up the application database, import the spatial
+        data, configure geoserver, and create BARD data files (if
+        necessary), run:
+
+        > sudo ./setup.py ../../docs/config.xsd ../../docs/config.xml
+
+     c. To configure portions of the application seperately, get more help 
+        on the setup tool by typing:
+
+        > ./setup.py --help
+
+    For any of the following steps, you may also include -vX for verbose
+    output during the setup process. This may be handy in identifying 
+    problems during the setup process.
+
+    If you run each setup step seperately, they must be performed in the
+    following order (all steps are required to get a properly functioning 
+    application):
+
+    > -d  : Create the database schema. This must happen before any other 
+            step of the setup process, and can be performed multiple times 
+            if the configuration matches the database settings with no side
+            effects.
+    > -g0 : Import the first (0 based index) GeoLevel from the configuration
+            file.
+    > -gX : Import the Xth* (0 based index) GeoLevel from the configuration 
+            file.
+    > -nX : Renest the geometry and data values from the Xth* (0 based 
+            index) GeoLevel.
+    > -V  : Create database views for the spatial layers in Geoserver.
+    > -G  : Configure a running Geoserver with the loaded spatial data.
+            **Note** Running this flag requires a configured and running
+            Geoserver.
+    > -b  : Compute and store a BARD basemap for BARD reports.
+    > -t  : Create the template plans that are configured. This step may 
+            happen any time after the nesting step.
+    > -s  : Collect all the static files used by the web application into
+            a location served by apache for performance.
+
+    * The importing and nesting must occur in the order of smallest 
+    geography to largest geography.
+
+ 9. Django serves up SLD files to clients, and need this mime type added
+    to the system's known mime types in order to serve the content
+    properly.
+
+    a. Open the file /etc/mime.types in your favorite editor.
+    b. Find the line that starts with "application/xml"
+    c. Add " sld" to the end of this line, after "xml xsl xsd"
+
+10. Now that you have the app configured and your data imported, you can 
+    run the app using Django's testing server
+     
+    > python ./manage.py runserver
+
+11. You will see a notice that your server is running and you can access 
+    your application at 127.0.0.1:8000  Enter that location into your 
+    browser on the local machine and you should be able to use the 
+    application.
+
+== Apache Configuration ==
+
+ 1. Running the application from the django development server is good for
+    setup, but for a production environment, you will want to configure
+    Apache.  First, copy the apache file into the "sites-available" 
+    Apache config directory (typically /etc/apache2/sites-available/)
+
+    > cp /projects/PublicMapping/DistrictBuilder/django/publicmapping.apache \
+        /etc/apache2/sites-available/publicmapping
+
+ 2. Enable the new publicmapping site in apache
+
+    > a2ensite publicmapping
+
+ 3. If you are NOT running the public mapping project as the default
+    web site in Apache, you will have to edit publicmapping.apache to
+    reflect your configuration (e.g. VirtualHost directives).
+
+ 4. If you ARE running the public mapping project as the default web
+    site in Apache, remove the default site configuration:
+
+   > a2dissite default
+
+ 5. Make sure you have the following modules for apache enabled: proxy, 
+    proxy_http, rewrite, wsgi and ssl
+    
+   > a2enmod proxy proxy_http rewrite wsgi ssl
+
+ 6. You may need to update /etc/apache2/mods-available/proxy.conf  
+    If you see:
+
+        Deny from All
+
+    change it to
+
+        Allow from All
+
+ 7. An update to the wsgi module requires a change to the publicmapping
+    apache configuration file. If your version of wsgi is >= 3, ensure
+    that line 121 is commented out, and line 130 is uncommented.
+
+    If your version of wsgi is < 3, ensure that line 121 is uncommented, 
+    and line 130 is commented out.
+
+ 8. This application requires SSL. You will need to generate your
+    own publicmapping certficate and key and place them in the 
+    /etc/ssl/certs directory with the names publicmapping.crt and 
+    publicmapping.key.
+
+    If you have trusted certificates created (or you prefer different 
+    names), you can edit the location of the files in the publicmapping 
+    apache file.
+
+    Generating SSL certificates is beyond the scope of this README.  Check
+    the Apache web site for more info:
+
+    http://httpd.apache.org/docs/2.0/ssl/ssl_faq.html
+
+ 9. This application runs as the apache user, usually www-data.  Be sure 
+    the file permissions allow for the www-data to read the project 
+    directories.  Only the reports directory needs to be writable by 
+    www-data.  No files are required to be readable by "all".
+
+      sudo mkdir /projects/PublicMapping/local/reports
+      sudo chgrp -R www-data /projects/PublicMapping/
+      sudo chmod -R 750 /projects/PublicMapping/
+      sudo chmod 770 /projects/PublicMapping/local/reports
+   
+
+== Geoserver configuration ==
+
+    Geoserver installation is **required** to complete the installation
+    with the setup.py script. Complete these setup steps before running
+    step 8 in the Installation steps above. It's possible to run sections
+    of the setup script without geoserver installed, but geoserver is 
+    required for the -G setup section.
+  
+ 1. To install geoserver, first make sure Tomcat is installed and running
+    properly; that means you can get to http://yourComputerName:8080/ and 
+    see the "It works" page. You will also need to set up a tomcat user 
+    that can manage and administer your site.  You can edit the 
+    /var/lib/tomcat6/conf/tomcat-users.xml file to create this user.
+
+ 2. Download Geoserver in WAR (Web Archive) format from:
+ 
+        http://geoserver.org/display/GEOS/GeoServer+2.0.2
+
+ 3. Unzip the downloaded zip file so you can access the geoserver.war file.
+
+ 4. Copy the .war file to the tomcat webapps dir.  It should be unpacked
+    automatically and deployed at the default /geoserver context
+    
+    > sudo cp geoserver.war /var/lib/tomcat6/webapps/
+    > sudo service tomcat6 restart
+    
+ 5. Add the REST Extension to GeoServer.
+
+     a. Change to the WEB-INF/lib directory inside of the GeoServer webapp,
+        inside of tomcat. This folder may be:
+
+        > cd /var/lib/tomcat6/webapps/geoserver/WEB-INF/lib
+
+     b. Download the GeoServer REST Extension that matches your installed
+        version of GeoServer. 
+
+        > sudo wget http://downloads.sourceforge.net/project/geoserver/GeoServer%20Extensions/2.0.2/geoserver-2.0.2-restconfig-plugin.zip
+
+     c. Extract this plugin in the current folder (lib):
+
+        > sudo unzip geoserver-2.0.2-restconfig-plugin.zip
+        > sudo chown tomcat6:tomcat6 restconfig*
+
+     d. Restart tomcat to pick up the changes to the geoserver application:
+     
+        > sudo service tomcat6 restart
+
+ 6. Set the geowebcache directory to a non-default.  Otherwise your tiles 
+    will be saved to /tmp and possibly disappear on reboot.  Add the 
+    following snippet to your <web-app> configuration in geoserver's webapp
+    configuration:
+    
+    > cd /var/lib/tomcat6/webapps/geoserver/WEB-INF
+    > sudo nano web.xml    
+
+      <!-- Change the geowebcache dir -->
+      <context-param>
+        <param-name>GEOWEBCACHE_CACHE_DIR</param-name>
+        <param-value>/var/lib/tomcat6/webapps/geoserver/data/gwc</param-value>
+      </context-param>
+
+ 7. Now that your GeoServer is configured, you should use the Services > 
+    GWC link in the menu to seed some of your layers.  This will make the 
+    base map layers appear faster.
+
+== BARD / Reports Configuration ==
+    DistrictBuilder can create reports using one of two backends.  If you'd
+    like to use the ScoreFunctions written into DistrictBuilder, please see 
+    the documentation on reporting configuration in the DistrictBuilder wiki.
+    If you'd like to use reports created by BARD - a statistical package
+    written in R - you'll need to follow the directions below to install BARD
+    and its dependencies.
+
+ 1. In order to use the BARD Reporting features, you will need to 
+    install BARD and R2HTML as the root user so that it's accessible to 
+    the django process.  Installing the geos dev libraries is needed to
+    install the rgeos package.
+    
+    > sudo aptitude install r-base-dev build-essential libgeos-dev 
+    > sudo R CMD javareconf
+    > sudo R
+    >> install.packages('R2HTML', dependencies=TRUE)
+    >> install.packages('stringr', dependencies=TRUE)
+    >> install.packages('ineq', dependencies=TRUE)
+    >> install.packages('rgeos', repos='http://R-Forge.R-project.org', dependencies=TRUE)
+    >> install.packages('BARD', dependencies=TRUE)
+    >> q('no')
+
+    If you have trouble installing any of these packages, you may need to 
+    hunt down and install a dependency or two, depending on your linux 
+    distribution.  NB: R packages are installed from source so you'll need
+    the build-essential package to install BARD.
+
+ 2. By default, reports are served from the following directory:
+
+    /projects/PublicMapping/local/reports
+
+ 3. You can also install the "reporting" app onto another server so that 
+    your web server is separated from your reporting server. If you decide
+    to do so, you can set the BARD_SERVER variable in your BardConfig in 
+    the xml file.  Use a fully qualified domain name, e.g. 
+    http://reporting.server.com
+
+ SECURITY NOTES:
+    No server authentication is required to run or read a report.
+    The only "protection" on viewing a created report is a simple hash in the URL.
+    Because the reports are not protected by a password, consider any reports
+    run on the app to be viewable to the public. It is possible for users to
+    share these URLs with non-users of the system.
+
+    When configuring the reporting server on a machine other than the
+    DistrictBuilder server, be sure to allow the reports server to accept 
+    requests only from the DistrictBuilder server.  This will prevent non-users
+    from requesting report creation.
+
+== Celery Configuration ==
+    Some processes take too long to happen over a synchronous web 
+    connection. The app uses a process queue called celery to make
+    these actions happen in the background so the web application 
+    stays performant.  After installing the celery components using
+    easy_install as stated at the top of the README, there's a bit more
+    configuration you need to do to get celeryd (the celery daemon) 
+    running when your server starts.
+
+    **Note** The celery configuration points to the configured database,
+    so the setup.py script must be run prior to performing these steps.
+    
+ 1. Download the celery init.d script from github, put it into your 
+    init.d folder, and enable it for startup
+     
+    > sudo wget --no-check-certificate -O /etc/init.d/celeryd \
+        https://raw.github.com/celery/celery/v3.0.5/extra/generic-init.d/celeryd
+    > sudo chmod a+x /etc/init.d/celeryd 
+    > sudo update-rc.d celeryd defaults
+   
+ 2. Copy the celeryd default settings file to your /etc/default directory. It
+    contains information such as the location of the log files and the user 
+    account under which celery runs
+
+    > sudo cp /projects/PublicMapping/DistrictBuilder/docs/celeryd /etc/default
+
+ 3. Create your log- and pid-file directories so that www-data can read and 
+    write them.
+
+    > sudo mkdir /var/log/celery /var/run/celery
+    > sudo chown www-data:www-data /var/log/celery /var/run/celery/
+
+ 4. Celery should be ready to go, start it from the init script.
+
+    > sudo service celeryd start
+
+== Data Configuration ==
+    Depending on your data, you may want to use the admin interface in 
+    the application to edit the display names of your subjects and add
+    reasonable "targets" so that the districts are properly displayed.
+    
+    You can also use the admin interface to determine which subjects
+    will be displayed as viewable on the map.  If you make a subject
+    visible on the map, be sure to set the target value so that styling
+    can be applied to the district values.
+    
+    You can reach the admin interface by going to:
+    
+    https://<yourServerName>/admin
+    
+
+== E-mail ==
+    If you'd like to allow users to retrieve forgotten passwords, make 
+    sure you set the Mailer options. These settings can be found in the 
+    config.xml file to reflect the server and authentication settings 
+    for your mail server. 
+
+== Documentation ==
+    The class documentation is available on any instance at 
+    https://<yourServerName>/docs/. Documentation is generated by epydoc.
+    If you make any changes to the documentation or code, you can use the 
+    epydoc.config file to regenerate the documentation in the docs/html 
+    folder.
+
+    The database schema image (schema.png) was generated using postgresql 
+    autodoc and graphviz.
+

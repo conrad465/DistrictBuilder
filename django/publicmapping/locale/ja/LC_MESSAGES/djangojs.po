@@ -1,0 +1,854 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-04 13:07-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+
+#: redistricting/static/js/chooseplan.js:75
+#: redistricting/static/js/chooseplan.js:245
+msgid "View Plan"
+msgstr "計画案を見る"
+
+#: redistricting/static/js/chooseplan.js:75
+#: redistricting/static/js/chooseplan.js:245
+#: redistricting/static/js/reaggregator.js:47
+msgid "Start Drawing"
+msgstr "境界線を描く"
+
+#: redistricting/static/js/chooseplan.js:88
+msgid ""
+"Thanks! Your file has been uploaded, and your plan is being constructed. "
+"When your plan is completely constructed, you will receive an email from us."
+msgstr ""
+"ファイルがアップロードされました。計画案を作成しています。作成が完成次第、e"
+"メールにでお知らせします。"
+
+#: redistricting/static/js/chooseplan.js:88
+msgid ""
+"We're sorry! Your file was transferred to us, but there was a problem "
+"converting it into a plan. Make sure the file is a zipped block equivalency "
+"file, and please try again."
+msgstr ""
+"申し訳ございません。ファイルはこちらに転送されましたが、計画案に変換する間に"
+"エラーが発生しました。ファイルが圧縮block equivalencyファイルであることを確認"
+"して、再度やり直してください。"
+
+#: redistricting/static/js/chooseplan.js:89
+msgid "Uploaded"
+msgstr "アップロード完了"
+
+#: redistricting/static/js/chooseplan.js:130
+#: redistricting/static/js/reaggregator.js:135
+msgid "Reaggregate"
+msgstr "再統合"
+
+#: redistricting/static/js/chooseplan.js:138
+#: redistricting/static/js/chooseplan.js:147
+msgid "Choose a plan from the table first"
+msgstr "先に表から計画案を選んでください"
+
+#: redistricting/static/js/chooseplan.js:155
+msgid "A name for the copied template is required"
+msgstr "コピーされたテンプレートに名前が必要です"
+
+#: redistricting/static/js/chooseplan.js:167
+msgid "Please provide a valid email address."
+msgstr "有効なEメールアドレスを入力してください。"
+
+#: redistricting/static/js/chooseplan.js:171
+msgid "Please provide a zipped district index file."
+msgstr "圧縮された選挙区インデックスファイルが必要です。"
+
+#: redistricting/static/js/chooseplan.js:175
+msgid "You must select a legislative body from the dropdown in the upload form"
+msgstr ""
+"アップロード・フォームの中のドロップダインから議会の種類を選んでください。"
+
+#: redistricting/static/js/chooseplan.js:188
+msgid "Creating New Plan..."
+msgstr "新しい計画案を作成中..."
+
+#: redistricting/static/js/chooseplan.js:189
+msgid "Please standby while creating new plan ..."
+msgstr "計画案作成中。お待ちください ..."
+
+#: redistricting/static/js/chooseplan.js:235
+msgid "Creation Error"
+msgstr "作成エラー"
+
+#: redistricting/static/js/chooseplan.js:238
+msgid "Tip: "
+msgstr "ヒント: "
+
+#: redistricting/static/js/chooseplan.js:239
+msgid "Make sure the new plan's name is unique."
+msgstr "新しい計画案の名前が他と重複していないか確認してください。"
+
+#: redistricting/static/js/chooseplan.js:306
+#: redistricting/static/js/reaggregator.js:141
+msgid "Needs reaggregation"
+msgstr "再統合が必要です"
+
+#: redistricting/static/js/chooseplan.js:309
+msgid "Reaggregating"
+msgstr "再統合中"
+
+#: redistricting/static/js/chooseplan.js:337
+#: redistricting/static/js/layerchooser.js:171
+msgid "Plan Name"
+msgstr "計画案名"
+
+#: redistricting/static/js/chooseplan.js:338
+#: redistricting/static/js/shareddistricts.js:141
+msgid "Author"
+msgstr "作成者"
+
+#: redistricting/static/js/chooseplan.js:339
+#: redistricting/static/js/shareddistricts.js:143
+msgid "Description"
+msgstr "説明"
+
+#: redistricting/static/js/chooseplan.js:340
+#: redistricting/static/js/shareddistricts.js:144
+msgid "Shared"
+msgstr "共有済"
+
+#: redistricting/static/js/chooseplan.js:341
+#: redistricting/static/js/shareddistricts.js:145
+msgid "Last Edited"
+msgstr "最終更新日"
+
+#: redistricting/static/js/chooseplan.js:342
+msgid "Delete"
+msgstr "削除"
+
+#: redistricting/static/js/chooseplan.js:343
+#: redistricting/static/js/shareddistricts.js:146
+msgid "Edit"
+msgstr "編集"
+
+#: redistricting/static/js/chooseplan.js:344
+#: redistricting/static/js/shareddistricts.js:147
+msgid "# Districts"
+msgstr "選挙区数"
+
+#: redistricting/static/js/chooseplan.js:345
+msgid "State"
+msgstr "州"
+
+#: redistricting/static/js/chooseplan.js:381
+msgid "Really delete plan: "
+msgstr "計画案を本当に削除しますか"
+
+#: redistricting/static/js/chooseplan.js:384
+msgid "Delete Plan"
+msgstr "削除する"
+
+#: redistricting/static/js/chooseplan.js:386
+#: redistricting/static/js/chooseplan.js:489
+#: redistricting/static/js/chooseplan.js:665
+msgid "Yes"
+msgstr "はい"
+
+#: redistricting/static/js/chooseplan.js:390
+msgid "Please wait. Deleting plan."
+msgstr "計画案削除中。お待ちください。"
+
+#: redistricting/static/js/chooseplan.js:391
+msgid "Deleting Plan"
+msgstr "計画案削除中。"
+
+#: redistricting/static/js/chooseplan.js:406
+#: redistricting/static/js/chooseplan.js:415
+msgid "Error Deleting Plan"
+msgstr ""
+
+#: redistricting/static/js/chooseplan.js:416
+msgid "Please try again later."
+msgstr ""
+
+#: redistricting/static/js/chooseplan.js:421
+#: redistricting/static/js/chooseplan.js:487
+#: redistricting/static/js/chooseplan.js:663
+#: redistricting/static/js/mapping.js:1336
+msgid "No"
+msgstr "いいえ"
+
+#: redistricting/static/js/chooseplan.js:430
+#: redistricting/static/js/chooseplan.js:562
+#: redistricting/static/js/chooseplan.js:591
+#: redistricting/static/js/chooseplan.js:594
+#: redistricting/static/js/chooseplan.js:602
+#: redistricting/static/js/chooseplan.js:608
+#: redistricting/static/js/layerchooser.js:190
+#: redistricting/static/js/shareddistricts.js:171
+msgid "Search"
+msgstr "検索"
+
+#: redistricting/static/js/chooseplan.js:430
+#: redistricting/static/js/layerchooser.js:190
+#: redistricting/static/js/shareddistricts.js:171
+msgid "Clear Search"
+msgstr "検索クリア"
+
+#: redistricting/static/js/chooseplan.js:515
+msgid "Error Saving Details"
+msgstr "詳細保存エラー"
+
+#: redistricting/static/js/chooseplan.js:581
+msgid "Current Filter: "
+msgstr "現在の絞り込み条件: "
+
+#: redistricting/static/js/chooseplan.js:717
+msgid "Upload Plan"
+msgstr "計画案のアップロード"
+
+#: redistricting/static/js/chooseplan.js:746
+msgid "Click the button to view the map as a guest"
+msgstr "ゲストとして地図を見るにはここをクリックしてください"
+
+#: redistricting/static/js/districtfile.js:120
+msgid "Download"
+msgstr "ダウンロード"
+
+#: redistricting/static/js/districtfile.js:133
+msgid "Request File"
+msgstr "ファイルのリクエスト"
+
+#: redistricting/static/js/districtfile.js:162
+msgid "Please wait. File is being created on the server"
+msgstr "サーバ上にファイルを作成中です。お待ちください。"
+
+#: redistricting/static/js/emailplan.js:42
+msgid "Submit Final Plan to Contest"
+msgstr "最終計画案をコンテストに提出する"
+
+#: redistricting/static/js/emailplan.js:99
+msgid "Please wait. Emailing plan."
+msgstr "計画案を送信中です。お待ちください。"
+
+#: redistricting/static/js/emailplan.js:100
+#: redistricting/static/js/emailplan.js:112
+msgid "Emailing Plan"
+msgstr "計画案送信中"
+
+#: redistricting/static/js/emailplan.js:113
+msgid ""
+"Your plan is in the process of being submitted. You will receive a "
+"confirmation email once it has completed successfully. This may take a few "
+"minutes."
+msgstr ""
+"計画案は提出途上にあります。提出に成功すると確認のEメールが送られます。これに"
+"は数分かかることがあります。"
+
+#: redistricting/static/js/emailplan.js:116
+#: redistricting/static/js/mapping.js:497
+#: redistricting/static/js/mapping.js:1051
+#: redistricting/static/js/mapping.js:1094
+#: redistricting/static/js/mapping.js:1159
+#: redistricting/static/js/mapping.js:1171
+#: redistricting/static/js/mapping.js:1307
+#: redistricting/static/js/mapping.js:2982
+msgid "OK"
+msgstr "OK"
+
+#: redistricting/static/js/emailplan.js:123
+#: redistricting/static/js/emailplan.js:132
+msgid "Error Emailing Plan"
+msgstr "計画案送信エラー"
+
+#: redistricting/static/js/emailplan.js:133
+msgid "Please try again later"
+msgstr "後ほどやり直してください"
+
+#: redistricting/static/js/layerchooser.js:59
+msgid "Choose Map Layers"
+msgstr "地図レイヤーを選択"
+
+#: redistricting/static/js/layerchooser.js:170
+msgid "User Name"
+msgstr "ユーザ名"
+
+#: redistricting/static/js/mapping.js:108
+msgid " Name"
+msgstr "名前"
+
+#: redistricting/static/js/mapping.js:385
+msgid "Satellite"
+msgstr "航空写真"
+
+#: redistricting/static/js/mapping.js:386
+msgid "Hybrid"
+msgstr "地図＋航空写真"
+
+#: redistricting/static/js/mapping.js:387
+msgid "Road"
+msgstr "道路"
+
+#: redistricting/static/js/mapping.js:438
+msgid "Map Transparency"
+msgstr "地図透過度"
+
+#: redistricting/static/js/mapping.js:456
+msgid "Please wait. Fixing unassigned blocks. This may take a couple minutes."
+msgstr ""
+"未割り当てブロックを修復中です。お待ちください。これには数分かかることがあり"
+"ます。"
+
+#: redistricting/static/js/mapping.js:459
+msgid "Fixing Unassigned"
+msgstr "未割り当てブロック修復中"
+
+#: redistricting/static/js/mapping.js:479
+msgid "Success"
+msgstr "成功"
+
+#: redistricting/static/js/mapping.js:479
+#: redistricting/static/js/mapping.js:486
+#: redistricting/static/js/mapping.js:540
+#: redistricting/static/js/mapping.js:547
+#: redistricting/static/js/mapping.js:1102
+#: redistricting/static/js/splitsreport.js:97 static/js/register.js:197
+#: static/js/register.js.c:205 static/js/ui.js:231 static/js/ui.js.c:263
+#: static/js/ui.js.c:508
+msgid "Error"
+msgstr "エラー"
+
+#: redistricting/static/js/mapping.js:485
+msgid "Error encountered while fixing unassigned"
+msgstr "未割り当て修復中にエラーが発生しました"
+
+#: redistricting/static/js/mapping.js:501
+msgid "No reference layer selected."
+msgstr "参照レイヤーが選択されていません。"
+
+#: redistricting/static/js/mapping.js:502
+#: redistricting/static/js/splitsreport.js:109
+#: redistricting/static/js/statisticssets.js:338
+#: redistricting/static/js/statisticssets.js:347
+#: redistricting/static/js/statisticssets.js:386
+msgid "Warning"
+msgstr "警告"
+
+#: redistricting/static/js/mapping.js:515
+msgid "Please wait. Querying for splits."
+msgstr "境界線を問い合わせ中です。お待ちください。"
+
+#: redistricting/static/js/mapping.js:519
+msgid "Finding Splits"
+msgstr "境界線を探しています"
+
+#: redistricting/static/js/mapping.js:534
+msgid "This plan contains no splits."
+msgstr "この計画案には境界線はありません。"
+
+#: redistricting/static/js/mapping.js:535
+msgid "No Splits Found"
+msgstr "境界線は見つかりませんでした"
+
+#: redistricting/static/js/mapping.js:539
+#: redistricting/static/js/mapping.js:546
+msgid "Error encountered while querying for splits: "
+msgstr "境界線問い合わせ中にエラーが発生しました: "
+
+#: redistricting/static/js/mapping.js:1054
+msgid "Please wait until your previous changes have been accepted."
+msgstr "直前の変更が受け入れられるまでお待ちください。"
+
+#: redistricting/static/js/mapping.js:1057
+msgid "Busy"
+msgstr "混雑中"
+
+#: redistricting/static/js/mapping.js:1099
+msgid "No districts were updated"
+msgstr "どの選挙区も更新されませんでした"
+
+#: redistricting/static/js/mapping.js:1162
+msgid ""
+"You cannot select that many features at once.\n"
+"\n"
+"Consider drawing a smaller area with the selection tool."
+msgstr ""
+"一度に沢山の機能を選択することはできません。\n"
+"\n"
+"選択ツールで小さな地域を描いてみてください。"
+
+#: redistricting/static/js/mapping.js:1165
+#: redistricting/static/js/mapping.js:1177
+#: redistricting/static/js/mapping.js:1325
+#: redistricting/static/js/multimember.js:213
+#: redistricting/static/js/multimember.js:219
+#: redistricting/static/js/reaggregator.js:192
+#: redistricting/static/js/shareddistricts.js:372
+#: redistricting/static/js/shareddistricts.js:379
+msgid "Sorry"
+msgstr "申し訳ありません"
+
+#: redistricting/static/js/mapping.js:1174
+msgid ""
+"You cannot select any more features.\n"
+"\n"
+"Consider assigning your current selection to a district first."
+msgstr ""
+"これ以上機能を選択できません。\n"
+"\n"
+"現在選択している機能を先に選挙区に割り当ててください。"
+
+#: redistricting/static/js/mapping.js:1326
+msgid "Unable to combine districts: "
+msgstr "選挙区を統合できません: "
+
+#: redistricting/static/js/mapping.js:1340
+msgid "Would you like to unassign the geography in "
+msgstr "〜の中の地域の割り当てを外しますか"
+
+#: redistricting/static/js/mapping.js:1423
+msgid "Sorry, your information could not be saved. Please try again later."
+msgstr ""
+"申し訳ありません。情報が保存されませんでした。後ほどやり直してください。"
+
+#: redistricting/static/js/mapping.js:1956
+msgid "Select One"
+msgstr "単独選択"
+
+#: redistricting/static/js/mapping.js:1957
+#: redistricting/static/js/mapping.js:1971
+msgid "Unassigned"
+msgstr "未割り当て"
+
+#: redistricting/static/js/mapping.js:1980
+#: redistricting/static/js/mapping.js:3001
+msgid "New "
+msgstr "新しい"
+
+#: redistricting/static/js/mapping.js:2540
+#: redistricting/static/js/mapping.js:2726
+msgid "Contiguity"
+msgstr "同一境界内"
+
+#: redistricting/static/js/mapping.js:2544
+#: redistricting/static/js/mapping.js:2729
+msgid "Compactness"
+msgstr ""
+
+#: redistricting/static/js/mapping.js:2548
+#: redistricting/static/js/mapping.js:2732
+msgid "None"
+msgstr "なし"
+
+#: redistricting/static/js/mapping.js:2620
+msgid "Boundary"
+msgstr "境界"
+
+#: redistricting/static/js/mapping.js:2626
+msgid "Noncontiguous"
+msgstr "同一境界外"
+
+#: redistricting/static/js/mapping.js:2628
+msgid "Contiguous"
+msgstr "同一境界内"
+
+#: redistricting/static/js/mapping.js:2634
+msgid "Very Compact"
+msgstr ""
+
+#: redistricting/static/js/mapping.js:2636
+msgid "Average"
+msgstr "平均的"
+
+#: redistricting/static/js/mapping.js:2638
+msgid "Hardly Compact"
+msgstr ""
+
+#: redistricting/static/js/mapping.js:2644
+msgid "Far Over Target"
+msgstr "目標数をはるかに超過"
+
+#: redistricting/static/js/mapping.js:2646
+msgid "Over Target"
+msgstr "目標数超過"
+
+#: redistricting/static/js/mapping.js:2648
+msgid "Within Target"
+msgstr "目標数範囲内"
+
+#: redistricting/static/js/mapping.js:2650
+msgid "Under Target"
+msgstr "目標数に不足"
+
+#: redistricting/static/js/mapping.js:2652
+msgid "Far Under Target"
+msgstr "目標数にかなり不足"
+
+#: redistricting/static/js/mapping.js:2978
+msgid "Please select a name for the %(bml)s"
+msgstr "%(bml)sに名前をつけてください"
+
+#: redistricting/static/js/mapping.js:2991
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: redistricting/static/js/mapping.js:3008
+msgid "Community Label"
+msgstr "コミュニティ名"
+
+#: redistricting/static/js/mapping.js:3009
+msgid "Community Type"
+msgstr "コミュニティタイプ"
+
+#: redistricting/static/js/multimember.js:59
+msgid "Set Multi-Member Districts"
+msgstr "複数定員区を設定する"
+
+#: redistricting/static/js/multimember.js:214
+msgid "Unable to assign representatives:"
+msgstr "代表者を割り当てられませんでした:"
+
+#: redistricting/static/js/multimember.js:220
+msgid "Unable to assign representatives"
+msgstr "代表者を割り当てられませんでした"
+
+#: redistricting/static/js/multimember.js:264
+msgid "District"
+msgstr "選挙区"
+
+#: redistricting/static/js/multimember.js:264
+msgid "District ID"
+msgstr "選挙区ID"
+
+#: redistricting/static/js/multimember.js:264
+msgid "# Members"
+msgstr "定員"
+
+#: redistricting/static/js/reaggregator.js:137
+msgid ""
+"Data in the system has changed. This plan needs to be reaggregated before it "
+"can be used. Click the button to begin reaggregation. This will run in the "
+"background, and the status will be updated when completed. Feel free to use "
+"the rest of the system in the meantime."
+msgstr ""
+"システム内のデータが変更されました。この計画案を使用する前に再統合する必要が"
+"あります。再統合を開始するにはこのボタンをクリックしてください。再統合はバッ"
+"クグラウンドで実行されます。再統合が完了するとステータスが更新されます。実行"
+"中もシステムの他の部分を利用することができます。"
+
+#: redistricting/static/js/reaggregator.js:143
+msgid ""
+"Data in the system has changed. The owner of this plan needs to reaggregate "
+"it before it can be used. The status of the plan will be updated when "
+"reaggregation has completed."
+msgstr ""
+"システム内のデータが変更されました。この計画案の所有者は、使用の前に再統合を"
+"する必要があります。再統合が完了すると、計画案のステータスが更新されます。"
+
+#: redistricting/static/js/reaggregator.js:151
+msgid "Reaggregation in progress"
+msgstr "再統合実行中"
+
+#: redistricting/static/js/reaggregator.js:153
+msgid ""
+"Data in the system has changed, and this plan is currently reaggregating to "
+"reflect these changes. The plan will not be available until reaggregation "
+"has completed."
+msgstr ""
+"システム内のデータが変更されたので、この計画案は変更を反映するために再統合中"
+"です。再統合が完了するまで、この計画案を使用することはできません。"
+
+#: redistricting/static/js/reaggregator.js:166
+msgid "Unknown state"
+msgstr "ステータス不明"
+
+#: redistricting/static/js/reaggregator.js:193
+msgid "Error reaggregating plan"
+msgstr "計画案再統合エラー"
+
+#: redistricting/static/js/reports.js:148
+msgid "Please select one or more reports to be generated."
+msgstr "作成するレポートを選択してください。"
+
+#: redistricting/static/js/reports.js:156
+msgid "Generating Report"
+msgstr "レポート作成中"
+
+#: redistricting/static/js/reports.js:157
+msgid "You may use the rest of the application while the report is building."
+msgstr ""
+"レポートを作成している間、アプリケーションの他の部分は利用することができま"
+"す。"
+
+#: redistricting/static/js/reports.js:158
+msgid "A preview of your report will appear in this space when it is ready."
+msgstr "レポート作成が完了すると、ここにプレビューが表示されます。"
+
+#: redistricting/static/js/reports.js:177
+msgid "Report Error"
+msgstr "レポートエラー"
+
+#: redistricting/static/js/reports.js:178
+msgid "Sorry, this report cannot be previewed."
+msgstr "申し訳ありません。このレポートのプレビューは表示できません。"
+
+#: redistricting/static/js/reports.js:209
+msgid "Connection Failed"
+msgstr "接続失敗"
+
+#: redistricting/static/js/reports.js:210
+msgid ""
+"There was a problem checking your report status. You can resume checking by "
+"clicking on the \"Create and Preview Report\" button."
+msgstr ""
+"レポートのステータス確認に問題が生じました。「レポートを作成してプレビューを"
+"表示」ボタンをクリックして再度実行することができます。"
+
+#: redistricting/static/js/reports.js:364
+msgid "Open Current Report in New Window"
+msgstr "現在のレポートを新しいウィンドウで表示する"
+
+#: redistricting/static/js/shareddistricts.js:60
+msgid "Copy and Paste %(bodyMembersCap)s"
+msgstr "%(bodyMembersCap)sをコピーしてペースト"
+
+#: redistricting/static/js/shareddistricts.js:142
+msgid "Plan"
+msgstr "計画案"
+
+#: redistricting/static/js/shareddistricts.js:199
+msgid "%(bodyMemberLongCap)s Name"
+msgstr "%(bodyMemberLongCap)s名"
+
+#: redistricting/static/js/shareddistricts.js:298
+msgid "Maximum %(bodyMembers)s Reached"
+msgstr "%(bodyMembers)sの人数制限に達しました"
+
+#: redistricting/static/js/shareddistricts.js:299
+msgid ""
+"Your plan is at maximum capacity. Please delete a %(bodyMemberLong)s to "
+"enable pasting."
+msgstr ""
+"あなたの計画案はキャパシティの最高限度に達しました。 %(bodyMemberLong)sを削除"
+"するとペーストが可能になります。"
+
+#: redistricting/static/js/shareddistricts.js:309
+msgid "2. Remove %(num_available_districts)s before submitting"
+msgstr "2. 提出する前に%(num_available_districts)sを削除する"
+
+#: redistricting/static/js/shareddistricts.js:313
+msgid "2. Check your selections"
+msgstr "2. 選択を確認する"
+
+#: redistricting/static/js/shareddistricts.js:318
+msgid "2. Select a %(bodyMemberLong)s to copy"
+msgstr "2. %(bodyMemberLong)sを選択してコピー"
+
+#: redistricting/static/js/shareddistricts.js:322
+msgid "2. Select a %(bodyMemberLong)s"
+msgstr "2. %(bodyMemberLong)sを選択"
+
+#: redistricting/static/js/shareddistricts.js:329
+msgid "2. Select up to %(available_districts)s %(bodyMembers)s to copy"
+msgstr "2. %(bodyMembers)sを%(available_districts)s個まで選択してコピー"
+
+#: redistricting/static/js/shareddistricts.js:336
+msgid "2. Select %(bodyMembers)s"
+msgstr "2. %(bodyMembers)sを選択"
+
+#: redistricting/static/js/shareddistricts.js:373
+#: redistricting/static/js/shareddistricts.js:380
+msgid "Unable to paste %(bodyMembers)s"
+msgstr "%(bodyMembers)sをペーストすることができません"
+
+#: redistricting/static/js/splitsreport.js:51
+msgid "Splits Report"
+msgstr "境界線レポート"
+
+#: redistricting/static/js/splitsreport.js:69
+msgid "Please wait. Retrieving splits report."
+msgstr "境界線レポートを取得しています。お待ちください。"
+
+#: redistricting/static/js/splitsreport.js:72
+msgid "Retrieving Splits Report"
+msgstr "境界線レポート取得中"
+
+#: redistricting/static/js/splitsreport.js:94
+msgid "Error encountered while retrieving splits report: "
+msgstr "境界線レポートの取得中にエラーが発生しました: "
+
+#: redistricting/static/js/splitsreport.js:108
+msgid "Please select either 1, 2, or 3 layers for comparison."
+msgstr "比較するレイヤーを１〜３つまで選んでください"
+
+#: redistricting/static/js/statisticssets.js:165
+msgid "Loading Statistics..."
+msgstr "統計を読み込んでいます..."
+
+#: redistricting/static/js/statisticssets.js:337
+msgid "Please select 3 or fewer statistics."
+msgstr "選択する統計は３つ以下にしてください。"
+
+#: redistricting/static/js/statisticssets.js:346
+msgid "Please name your statistics set."
+msgstr "統計セットに名前をつけてください。"
+
+#: redistricting/static/js/statisticssets.js:392
+msgid "Please select 1-3 statistics to save in the named set."
+msgstr "このセットに保存する統計を１〜３つまで選んでください。"
+
+#: redistricting/static/js/statisticssets.js:393
+msgid "Incomplete"
+msgstr "未完了"
+
+#: static/js/register.js:40
+msgid "Terms of Use"
+msgstr "利用規約"
+
+#: static/js/register.js:41
+msgid "Forgot Password"
+msgstr "パスワードを忘れたら"
+
+#: static/js/register.js:42
+msgid "Duplicate Session"
+msgstr "セッションを複写する"
+
+#: static/js/register.js:43
+msgid "Maximum Users Exceeded"
+msgstr "利用可能ユーザ数を超過しています"
+
+#: static/js/register.js:50
+msgid ""
+"Sorry, registration is not available at this time.  Please try logging in "
+"anonymously or coming back later"
+msgstr ""
+"申し訳ありません。現在は登録を受け付けておりません。登録せずにログインする"
+"か、再度やり直してください。"
+
+#: static/js/register.js:52
+msgid "Signup Unavailable"
+msgstr "登録受付停止中"
+
+#: static/js/register.js:178
+msgid "You've been registered for the public mapping project."
+msgstr "公共選挙区再編プロジェクトへの登録が完了しました。"
+
+#: static/js/register.js:181
+msgid "Success!"
+msgstr "成功しました！"
+
+#: static/js/register.js:183
+msgid "Start Mapping"
+msgstr "再編を開始する"
+
+#: static/js/register.js:196
+msgid "User Name already exists. Please choose another one."
+msgstr "このユーザ名は既に利用されています。他のユーザ名を選んでください。"
+
+#: static/js/register.js:204
+msgid ""
+"Email already exists. Enter another one, or use the password retrieval form"
+msgstr ""
+"このEメールは既に登録されています。他のEメールアドレスを入力するか、パスワー"
+"ド回復フォームを利用してください。"
+
+#: static/js/register.js:242
+msgid "Please Wait..."
+msgstr "お待ちください..."
+
+#: static/js/register.js:312
+msgid "You entered an incorrect user name or password"
+msgstr "ユーザ名かパスワードが間違っています"
+
+#: static/js/register.js:316
+msgid "Login Error"
+msgstr "ログインエラー"
+
+#: static/js/register.js:365
+msgid "Logged Off"
+msgstr "ログアウト完了"
+
+#: static/js/register.js:366
+msgid ""
+"You have been logged off by another browser. This happens sometimes if you "
+"attempt to access the application from two different locations."
+msgstr ""
+"他のブラウザで既にログアウトしています。これは、別々の場所からアプリケーショ"
+"ンに接続しようとすると起きることがあります。"
+
+#: static/js/register.js:367
+msgid "Please log in again"
+msgstr "再度ログインしてください"
+
+#: static/js/ui.js:65
+msgid "Coming Soon..."
+msgstr "建設中です"
+
+#: static/js/ui.js:154
+msgid ""
+"No plans have been submitted for this leaderboard. Please check back later."
+msgstr ""
+"このスコアボードには計画案が提出されていません。しばらくしてから再度確認して"
+"ください。"
+
+#: static/js/ui.js:226 static/js/ui.js.c:256
+msgid "Validation Failed"
+msgstr "検証失敗"
+
+#: static/js/ui.js:231 static/js/ui.js.c:264
+msgid "Server error. Please try again later"
+msgstr "サーバーにエラーが発生しました。再度やり直してください。"
+
+#: static/js/ui.js:239
+msgid "Update Leaderboards<br/>with Working Plan"
+msgstr "スコアボードを<br/>現在の計画案で更新する"
+
+#: static/js/ui.js:271
+msgid "Download Scores<br/>as CSV"
+msgstr "スコアをCSV形式で<br/>ダウンロードする"
+
+#: static/js/ui.js:394
+msgid "Last Saved on %(day)s at %(hour)s:%(minute)s"
+msgstr "最終保存日 %(day)s %(hour)s:%(minute)s"
+
+#: static/js/ui.js:497
+msgid "Please Wait"
+msgstr "お待ちください"
+
+#: static/js/ui.js:497
+msgid "Publishing with the server"
+msgstr "サーバー上に公開しています"
+
+#: static/js/ui.js:508
+msgid "Please enter a new name to publish your plan."
+msgstr "計画案を公開するために新しい名前をつけてください"
+
+#: static/js/ui.js:520
+msgid "Oops!"
+msgstr "おぉっと。"
+
+#: static/js/ui.js:539
+msgid "Server Failure"
+msgstr "サーバーエラー"
+
+#: static/js/ui.js:539
+msgid "Sorry, we weren't able to contact the server.  Please try again later."
+msgstr ""
+"申し訳ありません。サーバーに接続できませんでした。再度やり直してください。"
+
+#~ msgid "Demographic "
+#~ msgstr "人口情報"
+
+#, fuzzy
+#~ msgid "Open report in a new window"
+#~ msgstr "現在のレポートを新しいウィンドウで表示する"

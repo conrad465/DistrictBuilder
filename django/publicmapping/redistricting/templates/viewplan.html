@@ -1,0 +1,1227 @@
+{% comment %}
+
+   Copyright 2010 Micah Altman, Michael McDonald
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+   This file is part of The Public Mapping Project
+   https://github.com/PublicMapping/
+
+   Purpose:
+       This template is a basic mapping interface.
+
+       This template provides basic mapping functionality for viewing and
+       navigating districts and plans. The editplan template extends this
+       functionality by providing editing tools.
+
+   Author:
+       Andrew Jennings, David Zwarg, Kenny Shepard
+
+{% endcomment %}
+{% load redistricting_extras %}
+{% load i18n static %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="{{ language_code }}">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta name="author" content="David Zwarg, Andrew Jennings, Kenny Shepard" />
+    <meta name="copyright" content="&copy; 2010 Micah Altman, Michael McDonald"/>
+    <meta property="og:title" content="{% trans "Redistricting plan by DistrictBuilder" %}" />
+    <meta property="og:description" content="{% trans "DistrictBuilder is web-based, open source software for collaborative redistricting." %}" />
+    <meta property="og:image" content="{% static 'images/db_sprite.png' %}" />
+    <title>{% trans "Open Source District Mapping Tool" %}</title>
+    <link rel="alternate" type="application/atom+xml" title="{% trans "Updated Plans from DistrictBuilder" %}" href="{% url 'plan-feed' %}"/>
+    <link rel="alternate" type="application/atom+xml" title="{% trans "Recently Shared Plans from DistrictBuilder" %}" href="{% url 'share-feed' %}"/>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'jqGrid/css/ui.jqgrid.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'jquery/themes/custom-theme/jquery-ui.custom.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/core.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/redistricting.css' %}"/>
+    <!--[if lte IE 7]>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/ie7.css' %}"/>
+        <![endif]-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/visuals.css' %}"/>
+    <script type="text/javascript" src="{% static 'openlayers/OpenLayers.js' %}"></script>
+    {% if "arc" in basemaps %}
+    <script type="text/javascript" src="{% static 'openlayers/ArcGISCache.js' %}"></script>
+    {% endif %}
+
+    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+    {% comment %}
+
+    Load external javascript libraries.
+
+    {% endcomment %}
+    <script type="text/javascript" src="{% static 'jquery/jquery-1.6.2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jquery/jquery-ui-1.8.16.custom.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jquery/external/jquery.tools.tooltip.slide.min.js' %}"></script>
+    {% with jqgrid_locale_path="jqGrid/js/i18n/grid.locale-"|add:language_code|add:".js" %}
+    <script type="text/javascript" src="{% static jqgrid_locale_path %}"></script>
+    {% endwith %}
+    <script type="text/javascript" src="{% static 'jqGrid/js/jquery.jqGrid.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqGrid/plugins/grid.postext.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/sprintf.js' %}"></script>
+    {% comment %}
+
+    Load internal javascript logic.
+
+    {% endcomment %}
+    <script type="text/javascript" src="{% static 'js/utils.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/ui.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/viewablesorter.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/mapping.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/districtfile.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/chooseplan.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/reaggregator.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/shareddistricts.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/reports.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/register.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/statisticssets.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/splitsreport.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/sha1.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/layerchooser.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/print.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/multimember.js' %}"></script>
+
+    {% if "bing" in basemaps %}
+    <script src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.2&mkt=en-us"></script>
+    {% endif %}
+    {% if "google" in basemaps %}
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ"></script>
+    {% endif %}
+
+    {% comment %}
+
+    Initialize the variables required for rendering the map on this page.
+    These variables are pulled from the django settings module, and
+    dynamically computed from the current plan of interest.
+
+    {% endcomment %}
+    <script type="text/javascript">
+        // NOTE: map server must be running on same host/protocol
+        // The name of the map server that serves up map tiles.
+        var MAP_SERVER = window.location.host;
+        // The protocol used to access the map server.
+        var MAP_SERVER_PROTOCOL = window.location.protocol;
+        // The names of the base maps to display.
+        var BASE_MAPS = '{{ basemaps }}'
+        // default to open street map if nothing is provided
+        if (BASE_MAPS === 'None') {
+            BASE_MAPS = 'osm-road';
+        }
+        // The extent of all geounits in the study area.
+        var STUDY_EXTENT = {{ study_area_extent }};
+        // The bounds of all geounits in the study area.
+        var STUDY_BOUNDS = new OpenLayers.Bounds(STUDY_EXTENT[0], STUDY_EXTENT[1], STUDY_EXTENT[2], STUDY_EXTENT[3]);
+        // The namespace configured for WFS requests
+        var NAMESPACE = '{{ namespace }}';
+        // The namespace HREF configured for WFS requests
+        var NS_HREF = '{{ ns_href }}';
+        // The maximum number of features that can be manipulated at once.
+        var FEATURE_LIMIT = {{ feature_limit }};
+
+        // The ID of the plan that this page is viewing
+        var PLAN_ID = {% if plan %}{{ plan.id }}{% else %}0{% endif %};
+        // The most current version of the plan. When viewing a plan,
+        // the most current plan version is initially displayed.
+        var PLAN_VERSION = {% if plan %}{{ plan.version }}{% else %}0{% endif %};
+        var PLAN_TYPE = '{% if plan and plan.is_community %}community{% else %}plan{% endif %}';
+        var PLAN_TEXT = '{{ plan_text }}';
+        var PLAN_TEXT_TITLE = '{{ plan_text|title }}';
+        // The history tree. This gets populated as the user walks
+        // backward in the history.
+        var PLAN_HISTORY = {};
+        // The id of the legislative body for this plan
+        var BODY_ID = {% if plan.legislative_body.id %}{{ plan.legislative_body.id }}{% else %}0{% endif %};
+        // The id of the special 'unassigned' district.
+        var UNASSIGNED_DISTRICT_ID = {% if unassigned_id %}{{ unassigned_id }}{% else %}0{% endif %};
+        // An array of configuration settings for the layers that are
+        // used to select geography.
+        var SNAP_LAYERS = [ {% for snap in snaplayers %}{
+            geolevel: {{ snap.geolevel }},
+            level: '{{ snap.level }}',
+            layer: '{{ snap.layer }}',
+            long_description: '{{ snap.long_description }}',
+            min_zoom: {{ snap.min_zoom }}
+        }{% if not forloop.last %},{% endif %}{% endfor %} ];
+        // An array of demographic settings for the choropleth variations
+        // of the snap layer
+        var DEMOGRAPHICS = [ {% for demo in demographics %}{
+            id: {{ demo.id }},
+            text: '{{ demo.text }}',
+            value: '{{ demo.value }}',
+            isdefault: {{ demo.isdefault }},
+            isdisplayed: {{ demo.isdisplayed }} }{% if not forloop.last %},{% endif %} {% endfor %} ];
+        var MAP_LAYERS = [];
+        for (var i = 0; i < SNAP_LAYERS.length; i++) {
+            MAP_LAYERS.push( NAMESPACE + ':demo_' + SNAP_LAYERS[i].level + '_none' );
+            for (var j = 0; j < DEMOGRAPHICS.length; j++) {
+                MAP_LAYERS.push( NAMESPACE + ':demo_' + SNAP_LAYERS[i].level + '_' + DEMOGRAPHICS[j].value );
+            }
+        }
+        // The maximum number of districts that can exist in this plan.
+        var MAX_DISTRICTS = parseInt('{{ max_dists }}'.replace(',','').replace('.','').replace(' ',''), 10);
+        // The name of a 'district' in this plan, could be "District ", etc
+        var BODY_MEMBER_LONG = '{{ body_member_long_label }}';
+        var BODY_MEMBERS = '{{ body_members }}';
+        var LEGISLATIVE_BODY = '{{ plan.legislative_body.name|lower }}';
+        // This settings determines whether a staff member is viewing the page in debug mode.
+        // It can be used to display messages to help with debugging and/or configuration
+        var DEBUG = {{ debugging_staff|lower }};
+        {% if upload %}
+        var UPLOADED = true;
+        var UPLOAD_STATUS = {% if upload_status %}true{% else %}false{% endif %};
+        {% endif %}
+    </script>
+    {% comment %}
+
+    Load Google Analytics Script if the ga_account has been set
+
+    {% endcomment %}
+    {% if ga_account %}
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', '{{ ga_account }}']);
+          {% if ga_domain %}
+          _gaq.push(['_setDomainName', '{{ ga_domain }}']);
+          {% endif %}
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+    {% endif %}
+
+  </head>
+  <body onload="init();" id="app">
+
+
+
+  <div id="steps" style="visibility: hidden;">
+     <div id="app_header">
+      {% comment %}
+      ATTRIBUTION NOTICE SECTION
+
+      Under section 4.3 of the license following section may not be altered
+      without the express written permission of the copyright holders.
+      {% endcomment %}
+      <div id="logo"><a href="/"><img src="{% static 'images/title-app.png' %}" alt="DistrictBuilder" /></a></div>
+      {% comment %}
+      ATTRIBUTION NOTICE SECTION ENDS
+      {% endcomment %}
+      <ul id="steps_tabs"> <!-- tabs have to be first UL in #steps or else tabs wont work -->
+        <li id="tab_plan"><a href="#step_plan">{% trans "Plan" %}</a><li>
+        <li id="tab_draw"><a href="#step_draw">{% if is_registered %}{% trans "Draw" %}{% else %}{% trans "View" %}{% endif %}</a></li>
+        <li id="tab_evaluate"><a href="#step_evaluate">{% trans "Evaluate" %}</a></li>
+        <li id="tab_share" class="last"><a href="#step_share">{% trans "Share" %}</a></li>
+        {% if has_leaderboard and not plan.is_community %}
+        <li id="tab_leaderboard" class="rounded"><a href="#step_leaderboard">{% trans "Leaderboards" %}</a></li>
+        {% endif %}
+      </ul>
+
+    {% csrf_token %}
+
+    <div id="site_nav">
+        <ul>
+            {% if not is_registered %}
+            {% comment %}
+
+            If the user is anonymous, display a login link.
+
+            {% endcomment %}
+            <li><a class="last" href="/">{% trans "Login" %}</a></li>
+            {% else %}
+            {% comment %}
+
+            If the user is logged in, display a link to an account
+            management panel, and a logout link.
+
+            {% endcomment %}
+            <li><a href="#" onclick="$('#register').dialog('open');return false;">{% trans "My Account" %}</a></li>
+            <li><a class="last" href="/accounts/logout/">{% trans "Logout" %}</a></li>
+            {% endif %}
+            <li>
+            {% include 'language_chooser.html' %}
+            </li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+   <div id="step_plan" class="main_content plan fulltab">
+     <div class="shadow_left"></div>
+     <div class="shadow_top"></div>
+     <div class="toolbar ui-widget-header"><h1>{% trans "Choose a Plan. Start Drawing." %}</h1></div>
+     <div class="tab_content">
+        {% comment %}
+        If there is only one legislative body, we won't display selectors or force
+        the user to choose one
+        {% endcomment %}
+        {% ifnotequal bodies|length 1 %}
+        <div class="leg_selector_container">
+            <span class="leg_selector_instructions">
+               1. {% trans "Select District Layer" %}
+            </span>
+            <select id="leg_selector" class="leg_selector">
+                {% for body in bodies %}
+                    <option value="{{ body.id }}">{% if has_regions %}{{ body.region.get_label }} - {{ body.get_long_description }}{% else %}{{ body.get_long_description }}{% endif %}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endifnotequal %}
+        <div id="plan_type">
+        {% ifnotequal bodies|length 1 %}
+          <h3>2. {% trans "Select Plan Type" %}</h3>
+        {% else %}
+          <h3>1. {% trans "Select Plan Type" %}</h3>
+        {% endifnotequal %}
+          <ul id="plan_buttons">
+              <li id="filter_templates">{% trans "Template" %}</li>
+              <li id="filter_shared">{% trans "Shared" %}</li>
+              <li id="filter_mine">{% trans "My Plans" %}</li>
+              <li id="new_from_file">{% trans "Upload Plan" %}</li>
+          </ul>
+        </div>
+        <div>
+          <div id="content_container">
+            <div id="table_container" class="middlecolumn" >
+                    {% ifnotequal bodies|length 1 %}
+                      <h3>3. {% trans "Select Plan" %}</h3>
+                    {% else %}
+                      <h3>2. {% trans "Select Plan" %}</h3>
+                    {% endifnotequal %}
+                <div id="search_filter" ></div>
+                <input id="plan_search" type="search" placeholder="{% trans "Search" %}" />
+                <table id="plan_table"></table>
+                <div id="plan_table_pager"></div>
+            </div>
+          <div id="upload_selection" class="middlecolumn" >
+              <label>{% trans "Upload a District Index file:" %}</label>
+              <form method="POST" enctype="multipart/form-data" action="/districtmapping/plan/upload/" id="frmUpload">
+                {% csrf_token %}
+                <input type="file" id="indexFile" name="indexFile"/>
+                {% ifnotequal bodies|length 1 %}
+                <div>
+                    <p>{% trans "You must choose a legislative body to which the new plan will be applied." %}</p>
+                </div>
+                <select id="leg_selector_upload" name="legislativeBody">
+                    <option value="">{% trans "Select a body" %}</option>
+                    {% for body in bodies %}
+                        <option value="{{ body.id }}">{% if has_regions %}{{ body.region.get_label }} - {{ body.get_long_description }}{% else %}{{ body.get_long_description }}{% endif %}</option>
+                    {% endfor %}
+                </select>
+                {% else %}
+                    {% for body in bodies %}
+                    <input type="hidden" id="leg_selector" name="legislativeBody" value="{{ body.id }}" />
+                    {% endfor %}
+                </select>
+                {% endifnotequal %}
+                {% if userinfo.email %}
+                <input type="hidden" id="userEmail" name="userEmail" value="{{ userinfo.email }}"/>
+                  {% else %}
+                  <div>
+                      <p>{% trans "Please enter your email address so DistrictBuilder can send you a confirmation when your plan has been uploaded. Your email will not be saved or shared." %}</p>
+                      <input type="text" id="userEmail" name="userEmail"/>
+                  </div>
+                  {% endif %}
+              </form>
+          </div>
+
+            <div id="form_column">
+                <div id="form_action">
+                    <div>
+                      {% ifnotequal bodies|length 1 %}
+                        <label id="lblStartDrawing">4. {% trans "Name Plan and Start Drawing:" %}</label>
+                      {% else %}
+                        <label id="lblStartDrawing">3. {% trans "Name Plan and Start Drawing:" %}</label>
+                      {% endifnotequal %}
+                    </div>
+                  <div id='radCopyOrEdit'>
+                      <input type="radio" name="Edit" value="edit" checked="checked">{% trans "Edit Selected Plan" %}</input><br/>
+                      <input type="radio" name="Edit" value="saveas">{% trans "Copy and Save Selected Plan" %}</input>
+                  </div>
+                  <div id="newName">
+                      <input type="text" id="txtNewName" name="txtNewName"/>
+                  </div>
+                  <button id="start_mapping">{% trans "Start Drawing" %}</button>
+                  <div id="start_mapping_help">
+                  </div>
+                </div>
+
+                <div id="form_container">
+                  <form id="plan_form">
+                    <h3>{% trans "Plan Details" %}</h3>
+                      <label id="owner_label" for="owner">{% trans "User Name:" %}</label>
+                      <input disabled type="text" id="owner" name="fields.owner" /><br/>
+
+                      <label id="name_label" for="name">{% trans "Plan Name:" %}</label>
+                      <input disabled type="text" id="name" name="fields.name" />
+
+                      <label id="description_label" for="description">{% trans "Description:" %}</label>
+                      <textarea disabled type="text" id="description" name="fields.description" rows="5" ></textarea><br/>
+
+                      <label id="districtCount_label" for="districtCount">{% trans "# of Districts:" %}</label>
+                      <input disabled type="text" id="districtCount" name="fields.districtCount" /><br/>
+
+                      <label id="is_shared_label" for="is_shared">{% trans "Shared:" %}</label>
+                      <input disabled type="text" id="is_shared" name="fields.is_shared" /><br/>
+
+                      <label id="edited_label" for="edited">{% trans "Last Modified:" %}</label>
+                      <input disabled type="text" id="edited" name="fields.edited" />
+
+                      <div id="edit_container">
+                        <div id="chooserFileDownloadTargetIndex" class="chooserDetailButton"></div>
+                        <div id="chooserFileDownloadTargetShape" class="chooserDetailButton"></div>
+                        <button id="edit_plan_attr" class="chooserDetailButton">{% trans "Edit<br>Details" %}</button>
+                        <button id="save_plan_attr" class="chooserDetailButton">{% trans "Save" %}</button>
+                        <button id="cancel_edit_plan_attr" class="chooserDetailButton">{% trans "Cancel" %}</button>
+                        <br />
+                      </div>
+                  </form>
+                </div>
+             </div>
+        <div class="clear"></div>
+      </div>
+   </div>
+ </div>
+ </div>
+   <div id="step_draw" class="main_content">
+      <div id="mapandmenu" class="fulltab" >
+         <div id="control_header" class="toolbar ui-widget-header">
+         <button id="choose_layers_button">{% trans "Set Map<br/>Layers" %}</button>
+          <div id="toolsets">
+            <div id="plan_export_container" class="toolbar_menu_container">
+                <button id="plan_export_button" class="btntoggle solotoggle">{% trans "Export" %}</button>
+                <div id="plan_export_menu" class="toolbar_menu">
+                    <button id="print_btn">{% trans "Print" %}</button>
+                    <button id="shapefile_btn">{% trans "Shape File" %}</button>
+                    <button id="rawdata_btn">{% trans "Raw Data" %}</button>
+                </div>
+            </div>
+            <div id="history_tools">
+            {% block toolset_history %}
+            {% comment %}
+
+              Add undo/redo history buttons when in edit mode
+
+            {% endcomment %}
+            {% endblock %}
+            </div>
+
+            {% block toolset_tabs %}
+              {% comment %}
+
+                Default tab setup. Additional tabs get added in edit mode.
+
+              {% endcomment %}
+              <ul class="mapping_tabs">
+                <li><a href="#toolset_draw">{% trans "Map Tools" %}</a></li>
+              </ul>
+            {% endblock %}
+
+
+
+          {% block toolset_draw %}
+          {% comment %}
+
+          Define a block named 'toolset_draw': this section is a place-
+          holder for drawing/assignement tools. By default, the viewer has
+          navigation-only ability, so those elements would have to be
+          implemented in an editor template that extends this viewer.
+
+          {% endcomment %}
+            <div class="toolset" id="toolset_draw">
+              <div class="toolset_group">
+                  <button class="navigate_map_tool active btntoggle toggle">{% trans "Pan" %}</button><br/>
+                  <button class="identify_map_tool btntoggle titletip" title="{% trans "Click on a geounit to see its demographic info." %}" >{% trans "Info" %}</button>
+              </div>
+            <div class="toolset_group toolset_group_lg">
+                  <button id="district_id_map_tool" title="{% blocktrans with body_member_long_label as district_label %}Click on a {{ district_label }} to see its ID.{% endblocktrans %}" class="btntoggle titletip"><br/>
+                    {% blocktrans with body_member_long_label|capfirst as district_label %}{{ district_label }} Info{% endblocktrans %}
+                </button>
+              </div>
+              <div class="toolset_group toolset_group_lg">
+                <button id="show_splits_button">{% trans "Show<br/>Splits" %}</button>
+                <button id="generate_splits_report_button">{% trans "Generate<br/>Splits Report" %}</button>
+               </div>
+              <div class="clear"></div>
+            </div>
+          {% endblock %}
+
+          {% block toolset_district %}
+          {% comment %}
+
+          Define a block named 'toolset_district': this section is a place-
+          holder for district editing tools. By default, the viewer has
+          no editing capability, so these elements would have to be
+          implemented in an editor template that extends this viewer.
+
+          {% endcomment %}
+          {% endblock %}
+
+            <div class="clear"></div>
+          </div>
+            {% if plan %}
+            {% comment %}
+
+            If a plan exists, show the map sidebar menu.
+
+            {% endcomment %}
+
+            <div id="map_menu">
+              {% if is_registered %}
+              <div id="stats_options">
+                 <button id="open_statistics_editor">{% trans "Edit Stats" %}</button>
+              </div>
+              {% endif %}
+
+              <ul class="mapping_tabs">
+                <li><a href="#sidebar_content"><button class="menu_toggle"></button>{% trans "Statistics" %}</a></li>
+              </ul>
+                <div class="sidebar_content">
+                  <div id="map_menu_header">
+                      <select></select>
+                    </div>
+                  <div class="map_menu_content demographics">
+                      <div class="sidebarload"><h3>{% trans "Loading Statistics..." %}</h3></div>
+                  </div>
+                </div>
+            </div>
+            {% endif %}
+          </div>
+          <div id="map">
+            <div class="shadow_left"></div>
+            <div class="shadow_top"></div>
+          </div>
+
+          <div id="map_settings_content">
+             <div id="map_type_content_container"></div>
+            <div id="opacity_slider"></div>
+            <div id="reference_layer_id" class="layer_type_container">
+                <div id="reference_layer_label">{% trans "Reference Layer:" %}</div>
+                <div id="reference_layer_name">{% trans "None" %}</div>
+            </div>
+          </div>
+          {% block multi_member %}
+          {% comment %}
+
+          Include the markup for the multi-member assignment tool
+
+          {% endcomment %}
+          {% endblock %}
+
+          {% block email_plan %}
+          {% comment %}
+
+          Include the markup for the email plan dialog
+
+          {% endcomment %}
+          {% endblock %}
+
+            <div id="splits_report_dialog">
+                <div id="splits_report_content">
+                    <div id="splits_report_select_panel">
+                        <h2>{% blocktrans with plan_text|title as plan_text_title %}Generate Splits Report for Current {{ plan_text_title }}{% endblocktrans %}</h2>
+                        <div id="splits_report_reminder_text">
+                            {% trans "Select reference layer(s) for comparison." %}</div>
+                        <div id="splits_report_available_layers">
+                            {% for snap in snaplayers %}
+                            {% if not forloop.last %}
+                            <div class="layer_choice_wrapper">
+                                <input id="geolevel.{{ snap.geolevel }}" class="layer_choice" type="checkbox" value="geolevel.{{ snap.geolevel }}" />
+                                <label for="geolevel.{{ snap.geolevel }}">{{ snap.long_description }}</label>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <h2>{% trans "Advanced options" %}</h2>
+                        <div class="inverse_choice_wrapper">
+                            <input id="inverse_choice" type="checkbox" />
+                            <label id="inverse_choice_label" for="inverse_choice">{% trans "Reverse splits detection" %}</label>
+                        </div>
+
+                        <div class="extended_choice_wrapper">
+                            <input id="extended_choice" type="checkbox" />
+                            <label id="extended_choice_label" for="extended_choice">{% trans "Extended report: List all" %}</label>
+                            <div id="extended_choice_label_more">
+                                {% trans "districts or communities contained within each district." %}
+                            </div>
+                            <div id="extended_choice_label_warning">
+                                {% trans "(Choosing this option will significantly increase the amount of time it takes to generate the report.)" %}
+                            </div>
+                        </div>
+
+                        <div id="splits_report_ok_div">
+                            <button id="splits_report_ok_button">{% trans "Generate Report" %}</button>
+                        </div>
+                    </div>
+                    <div id="splits_report_results_panel">
+                        <h2>{% trans "Splits Report" %}</h2>
+                        <div id="splits_report_results_container">
+                          <p>{% trans "No report generated." %}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(function() {
+                    splitsreport = splitsreport({
+                        container: $('#splits_report_dialog'),
+                        target: $('#generate_splits_report_button'),
+                        okButton: $('#splits_report_ok_button'),
+                        inverseCheckbox: $('#inverse_choice'),
+                        extendedCheckbox: $('#extended_choice'),
+                        availableLayers: $('#splits_report_available_layers'),
+                        referenceLayerSelect: $('#reference_layer_select'),
+                        splitsReportUrl: '/districtmapping/plan/{{ plan.id }}/splitsreport/',
+                        resultsContainer: $('#splits_report_results_container'),
+                        map: $('#map'),
+                        getVersionFn: function() {
+                            return $('#history_cursor').val();
+                        }
+                    }).init();
+                });
+            </script>
+
+          <div id="map_legend">
+              <button id="legend_toggle">{% trans "Map Legend" %}</button>
+          </div>
+          {% comment %}
+
+          These hidden divs are used to style districts.
+          This is needed because the legend items do not
+          exist before the district layer is drawn.
+
+          {% endcomment %}
+          <div class="locked" style="display:none"></div>
+          <div class="highlighted" style="display:none"></div>
+          <div class="reference" style="display:none"></div>
+
+          <div id="map_legend_content">
+            <table id="basemap_legend">
+                <thead>
+                    <tr>
+                        <th colspan="2" id="legend_title">{% trans "Total Population" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div id="legend_swatch_1" class="swatch basemap_swatch">&nbsp;</div></td>
+                        <td>0 - 100,000</td>
+                    </tr>
+                    <tr>
+                        <td><div id="legend_swatch_2" class="swatch basemap_swatch">&nbsp;</div></td>
+                        <td>100,000 - 500,000</td>
+                    </tr>
+                    <tr>
+                        <td><div id="legend_swatch_3" class="swatch basemap_swatch">&nbsp;</div></td> <td>&gt; 500,000</td> </tr> </tbody>
+            </table>
+            <table id="district_legend" {% if plan.is_community %}style="display: none;"{% endif %}>
+                <thead>
+                    <tr>
+                        <th colspan="2">{% blocktrans with body_member_long_label|capfirst as ll %}{{ ll }}{% endblocktrans %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div id="district_swatch_farover" class="swatch farover district_swatch">&nbsp;</div></td>
+                        <td>{% trans "Far Over Target" %}</td>
+                    </tr>
+                    <tr>
+                        <td><div id="district_swatch_over" class="swatch over district_swatch">&nbsp;</div></td>
+                        <td>{% trans "Over Target" %}</td>
+                    </tr>
+                    <tr>
+                        <td><div id="district_swatch_within" class="swatch target district_swatch">&nbsp;</div></td>
+                        <td>{% trans "Within Target" %}</td>
+                    </tr>
+                    <tr>
+                        <td><div id="district_swatch_under" class="swatch under district_swatch">&nbsp;</div></td>
+                        <td>{% trans "Under Target" %}</td>
+                    </tr>
+                    <tr>
+                        <td><div id="district_swatch_farunder" class="swatch farunder district_swatch">&nbsp;</div></td>
+                        <td>{% trans "Far Under Target" %}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="district_extras_legend">
+                <tbody>
+                    <tr>
+                        <td class="indented_swatch">
+                            <div id="district_swatch_locked" class="swatch locked">&nbsp;</div>
+                        </td>
+                        <td>{% trans "Locked For Editing" %}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="indented_swatch">
+                            <div id="district_swatch_highlighted" class="swatch highlighted">&nbsp;</div>
+                        </td>
+                        <td>{% trans "Highlighted" %}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="reference_legend">
+                <thead>
+                    <tr>
+                        <th colspan="2">{% trans "Reference" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="indented_swatch"><div id="reference_swatch" class="swatch reference">&nbsp;</div></td>
+                        <td id="reference_title" >{% trans "reference" %}</td>
+                    <tr>
+                </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+    <div id="step_evaluate" class="main_content evaluate fulltab">
+      <div class="shadow_left"></div>
+      <div class="shadow_top"></div>
+      <div class="toolbar ui-widget-header"><h1>{% trans "Evaluate Statistics" %}</h1></div>
+      <div class="tab_content">
+		<div class="evaluate_container">
+        {% if calculator_reports != "[]" %}
+          <div id="reportdescription">
+            <div id="description">
+               <h3>{% blocktrans %}Select the plan statistics you'd like included in a comprehensive report on your redistricting plan.  After you've made your selections click "Create and Preview Report" to view the final report.{% endblocktrans %}</h3>
+            </div>
+            <div id="options"></div>
+		    <div id="reportButtons">
+              <button id="btnPreviewReport">{% trans "Create and Preview New Report" %}</button>
+            </div>
+          </div>
+          <div id="reportPreviewContainer">
+            <div id="reportPreview" class="report multiple"><div class="reportStatus"><img src="{% static 'images/icon-table-lg.png' %}" /><h1>{% trans "Please generate a report<br/>to preview statistics" %}</h1></div></div>
+          </div>
+
+        {% else %}
+          {% if reporting_template %}
+            <div class="alt_reports">
+            {% include reporting_template %}
+            </div>
+          {% endif %}
+        {% endif %}
+        </div>
+      </div>
+    </div>
+    {% if has_leaderboard and not plan.is_community %}
+    <div id="step_leaderboard" class="main_content leaderboard fulltab">
+      <div class="shadow_left"></div>
+      <div class="shadow_top"></div>
+      <div class="toolbar  ui-widget-header" id="leaderboard_tabs">
+          <ul id="leaderboard_nav">
+              <li id="tab_topranked"><a href="#leaderboard_topranked_surrogate">{% trans "Top Ranked Users' Plans" %}</a><li>
+              {% if is_registered %}
+              <li id="tab_myranked"><a href="#leaderboard_myranked_surrogate">{% trans "My Ranked Plans" %}</a></li>
+              {% endif %}
+          </ul>
+          <div id="updateLeaderboardsContainer"></div>
+          <div id="downloadLeaderboardsContainer"></div>
+
+          {% comment %}
+
+          These two 'surrogate' divs are needed due to changes in the jQuery UI Tab control
+          that make it so the tab content divs are required to be within the parent tab control.
+          Without a complete stylistic redesign, the simplest workaround is to intercept tab
+          change events to these fake containers to hide/show the real containers (below).
+
+          {% endcomment %}
+          <div id="leaderboard_topranked_surrogate"></div>
+          {% if is_registered %}
+          <div id="leaderboard_myranked_surrogate"></div>
+          {% endif %}
+       </div>
+
+      <div class="tab_content">
+          {% ifnotequal leaderboard_bodies|length 1 %}
+          <div class="leaderboard_panels">
+            <div class="leg_selector_container">
+                <span class="leg_selector_instructions">
+                   1. {% trans "Select Legislative Body" %}
+                </span>
+                <select id="legSelectorLeaderboards">
+                    {% for body in leaderboard_bodies %}
+                        <option value="{{ body.id }}">{{ body.get_long_description }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+          </div>
+          {% endifnotequal %}
+          {% ifequal leaderboard_bodies|length 1 %}
+            <input id="legSelectorLeaderboards" type="hidden" value="{{ leaderboard_bodies.1.id }}" />
+          {% endifequal %}
+
+          <div id="leaderboard_topranked"></div>
+          {% if is_registered %}
+          <div id="leaderboard_myranked"></div>
+          {% endif %}
+      </div>
+    </div>
+    {% endif %}
+    <div id="step_share" class="main_content share fulltab">
+      <div class="shadow_left"></div>
+      <div class="shadow_top"></div>
+      <div class="toolbar ui-widget-header"><h1>{% blocktrans with plan_text|title as plan_text_title %}Share a {{ plan_text_title }}{% endblocktrans %}</h1></div>
+      <div class="tab_content">
+          <div id="saveandshare">
+              {% block share_panel %}
+              {% comment %}
+
+              Define a block entitled 'share_panel': this panel would show
+              sharing options in an editor interface, but the default
+              viewer does not have that capability.
+
+              {% endcomment %}
+              <div class="explanation">
+                  <h3>{% trans "This plan has been shared" %}</h3>
+                  <p>{% trans "Anyone can view this plan by visiting the following URL in a web browser:" %}</p>
+                  <div id="share_url">
+                      <script type="text/javascript">document.write(window.location.protocol, '//',
+                         window.location.host, "{% url 'plan-view' planid=plan.id %}");
+                      </script>
+                 <ul class="share-buttons">
+                  <li class="twitter-tweet">
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal">
+                      {% trans "Tweet" %}
+                    </a>
+                    <script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>
+                  </li>
+
+                  <li class="facebook-like">
+                    <div id="fb-root"></div>
+                    <script src="https://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+                    <fb:like width="90" show_faces="false" action="like" layout="button_count"></fb:like>
+                  </li>
+
+                  <li class="google-plusone">
+                    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+                    <g:plusone size="medium"></g:plusone>
+                  </li>
+                </ul>
+                  <div class="clear"></div>
+                  </div>
+              </div>
+              {% endblock %}
+              <div class="blockfile">
+                  <h3>{% trans "Plan File Export" %}</h3>
+                  <p>{% blocktrans with body_member_long_label|lower as bmlll %}
+                  The {{ bmlll }} index file is a comma-separated-value file (csv).
+                  Each line lists the unique id of the building blocks of each {{ plan_text }}
+                  (such as ward, census block, etc.) and the district to which it belongs. This
+                  file can be imported to your account or someone else's account or used in analysis
+                  of the {{ plan_text }} using other GIS software.
+                  {% endblocktrans %}
+                  </p>
+                  <div id='districtIndexFileTarget' />
+              </div>
+          </div>
+        </div>
+        {% block verify_submit %}
+        {% comment %}
+
+        Define a block entitled 'verify_submit': this panel will show the
+        verification and submission instructions for editable plans to
+        registered users when the leaderboard is enabled.
+
+        {% endcomment %}
+        {% endblock %}
+    </div>
+</div>
+<div id="toolbar_plans">
+     <div class="toolset_group first">
+       <div class="planname">
+          {% if plan.name %}
+          {% comment %}
+
+          If a plan exists and has a name, show the plan name at the
+          bottom left of the map.
+
+          {% endcomment %}
+          <label>
+            {% if plan.is_community %}
+                {% trans "Community Map Name:" %}
+            {% else %}
+                {% trans "Plan Name:" %}
+            {% endif %}
+          </label> {{ plan.name|truncatechars:40 }}
+          {% else %}
+          {% comment %}
+
+          No plan exists, so indicate to the user that they must select
+          a plan before anything else can happen.
+
+          {% endcomment %}
+          {% trans "Please select a plan" %}
+          {% endif %}
+      </div>
+     </div>
+     {% if plan.name %}
+     <div class="toolset_group">
+       <div>
+          {% comment %}
+
+          This label shows which layer is visible at the current zoom level.
+
+          {% endcomment %}
+         <label>
+           {% trans "Currently Viewing:" %}&nbsp;<span id="currently_viewing"></span>
+         </label>
+       </div>
+     </div>
+     {% endif %}
+     {% if plan and is_editable %}
+     {% comment %}
+
+     When a plan exists, and is editable, show a section that reflects the
+     time that the plan was saved.
+
+     {% endcomment %}
+     <div class="toolset_group last">
+        {% if plan.edited %}
+          {% comment %}
+
+          Show the edited time of the plan.
+
+          {% endcomment %}
+          <div id="saveplaninfo" class="savedat">{{ plan.edited.isoformat }}</div>
+        {% else %}
+          {% comment %}
+
+          Indicate that the plan has not yet been saved.
+
+          {% endcomment %}
+          <div id="saveplaninfo" class="savedat">{% trans "Plan not saved" %}</div>
+        {% endif %}
+      </div>
+      {% endif %}
+</div>
+<div id="working" title="{% trans "Please Wait" %}">{% blocktrans %}Please wait. New {{ body_members }} are computed...{% endblocktrans %}</div>
+<div id="waiting" title="{% trans "Please Wait" %}">{% trans "Please wait. Data is being retrieved..." %}</div>
+<div id="scoring" title="{% trans "Please Wait" %}">{% trans "Please wait. Plan is being validated. This may take a few minutes." %}</div>
+<div id="DialogContainer"></div>
+<div class="olHandlerBoxSelectFeature" style="display:none;"></div>
+
+{% block shared_districts %}
+{% comment %}
+
+Include the shared_districts markup if we're using the copy/paste tool
+
+{% endcomment %}
+{% endblock %}
+
+{% if plan.name %}
+<div id="choose_layers_dialog">
+    <div id="choose_layers_content">
+        <div id="choose_layers_select_div">
+            {% comment %}
+
+            Dynamically populate the "Show Layer by:" dropdown, based
+            on the demographics that are configured in the application.
+
+            {% endcomment %}
+            <div class="dialog_step">
+              <h2>1. {% blocktrans with layer_type='<span id="layer_type">Layer</span>' %}Select {{ layer_type }} Thematic Map{% endblocktrans %}</h2>
+              <select id="showby" class="indented fillwidth" autocomplete="off">
+                  <option value="none">{% trans "None" %}</option>
+                  {% for demo in demographics %}
+                      <option value="{{ demo.value }}" {% if demo.isdefault == "true" %}selected=true{% endif %}>
+                          {{ demo.text }}
+                      </option>
+                  {% endfor %}
+              </select>
+            </div>
+
+
+            <div class="dialog_step" {% if plan.is_community %}style="display: none;"{% endif %}>
+                <h2>2. {% trans "Choose District Thematic Map" %}</h2>
+                {% comment %}
+
+                Dynamically populate the "Show Districts by:" dropdown,
+                based on the demographics that are configured in the
+                application.
+
+                {% endcomment %}
+                <select id="districtby" class="indented fillwidth" autocomplete="off">
+                    <option value="0" name="None">{% trans "None" %}</option>
+                    <option value="-1" name="Compactness">{% trans "Compactness" %}</option>
+                    <option value="-2" name="Contiguity">{% trans "Contiguity" %}</option>
+                    {% if adjacency %}
+                    <option value="-3" name="Adjacency">{% trans "Adjacency" %}</option>
+                    {% endif %}
+                    {% if convexchoropleth %}
+                    <option value="-4" name="Convex Hull Ratio">{% trans "Convex Hull Ratio" %}</option>
+                    {% endif %}
+                    {% for demo in demographics %}
+                        {% if demo.isdisplayed == "true" %}
+                            <option value="{{ demo.id }}" name="{{ demo.value }}" {% if demo.isdefault == "true" %}selected="true"{% endif %}>
+                                {{ demo.text }}
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="dialog_step">
+              <h2>{% if plan.is_community %}2{% else %}3{% endif %}. {% trans "Choose a Reference Layer" %}</h2>
+              <select id="reference_layer_select" class="indented fillwidth" autocomplete="off">
+                  <option value="None">{% trans "None" %}</option>
+                  {% for snap in snaplayers %}
+                      <option value="geolevel.{{ snap.geolevel }}">
+                          {{ snap.long_description }}
+                      </option>
+                  {% endfor %}
+              </select>
+              <div id="reference_labels_check_wrapper">
+                  <input id="reference_labels_check" type="checkbox" checked="checked" />
+                  <label id="reference_labels_label" for="reference_labels_check">{% trans "Show Labels?" %}</label>
+              </div>
+              <div id="choose_layers_button_group" class="indented">
+              <h2 class="indented centered">{% trans "OR..." %}</h2>
+              <button id="choose_reference_layer_button" class="lg spacebelow">
+                  {% trans "Choose a:<br/>legislative district or community map<br/>reference layer" %}
+              </button>
+              </div>
+              <div class="clear"></div>
+            </div>
+        </div>
+        <div id="reference_layer_content" class="dialog_step">
+            <h2>{% if plan.is_community %}3{% else %}4{% endif %}. {% trans "Select Plan Type" %}</h2>
+            <select id="ref_leg_selector" class="indented fillwidth">
+                {% for body in bodies %}
+                    <option value="{{ body.id }}">{{ body.get_long_description }}</option>
+                {% endfor %}
+            </select>
+
+            <h2>{% if plan.is_community %}4{% else %}5{% endif %}. {% trans "Select Plan to Display as Reference Layer" %}</h2>
+            <table id="reference_plans_table"></table>
+            <div id="reference_plans_pager"></div>
+        </div>
+        <div id="choose_layers_ok_div">
+          <button id="choose_layers_ok_button">{% trans "OK" %}</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        setTimeout(function() {
+            layerChooser = layerchooser({
+                container: $('#choose_layers_dialog'),
+                target: $('#choose_layers_button').button({icons:{primary:'icon-layers'}}),
+                referenceLayerButton: $('#choose_reference_layer_button'),
+                referenceLayerType: $('#ref_leg_selector'),
+                okButton: $('#choose_layers_ok_button'),
+                referenceLayerContent: $('#reference_layer_content'),
+                referenceLayerSelect: $('#reference_layer_select'),
+                referenceLayerName: $('#reference_layer_name'),
+                referenceLayerLegend: $('#reference_legend'),
+                referenceLayerLabelsCheck: $('#reference_labels_check'),
+                referenceLayerLabelsWrapper: $('#reference_labels_check_wrapper'),
+                referencePlansTable: $('#reference_plans_table'),
+                referencePlansPager: $('#reference_plans_pager'),
+                referencePlansUrl: '/districtmapping/getplans/',
+                map: $('#map'),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]')
+            }).init();
+        }, 1000);
+    });
+</script>
+{% endif %}
+
+{% if is_registered %}
+{% comment %}
+
+Include the stats editor if user can edit stats.
+
+{% endcomment %}
+<div id="stats_editor_container" class="stats_editor"
+        title="{% trans "Edit Statistics Sets" %}" >
+    <div id="stats_editor_instructions">
+        <h3>{% blocktrans %}You can select up to three statistics at once to display in
+        the sidebar. Each set of three statistics will be saved in the dropdown
+        for you to select or edit later. You may have up to three sets of
+        statistics saved.{% endblocktrans %}</h3>
+    </div>
+    1. {% trans "Select up to 3 statistics" %}
+    <button id="clear_statistics">{% trans "Clear Choices" %}</button>
+    <div id="available_statistics"> </div>
+
+    <div id="name_statistics_set">
+        2. {% trans "Name Statistics Set" %}
+        <input type="text" id="statistics_set_name" maxlength="50" />
+        <button id="save_statistics_set">{% trans "Save Set" %}</button>
+    </div>
+    <div id="existing_statistics_set">
+        {% trans "... Or select a saved statistics set" %}
+    </div>
+    <div id="saved_statistics_sets"> </div>
+</div>
+{% endif %}
+
+{% block district_info %}
+{% comment %}
+
+Include the district info dialog if the user can comment or tag community
+maps.
+
+{% endcomment %}
+{% endblock %}
+
+{% comment %}
+
+Include the markup for the account management panel.
+
+{% endcomment %}
+{% include "account.html" %}
+
+<script type="text/javascript" defer="true">
+    // run the initialization for these components when the page is ready
+    $( function() {
+        /* Necessary for Django csrf for all js on this page */
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    // Only send the token to relative URLs i.e. locally.
+                    xhr.setRequestHeader("X-CSRFToken",
+                                         $("input[name=csrfmiddlewaretoken]").val());
+                }
+            }
+        });
+
+        // initialize a working dialog
+        $('#working').dialog({
+            resizable:false,
+            modal:false,
+            minHeight: 50,
+            draggable:true,
+            closeOnEscape:false,
+            autoOpen:false,
+            open: function(event,ui) {
+                $('.ui-dialog-titlebar-close', $(this).parent()).hide();
+            }
+        });
+
+        // initialize a waiting dialog
+        $('#waiting').dialog({
+            resizable:false,
+            modal:false,
+            minHeight: 50,
+            draggable:true,
+            closeOnEscape:false,
+            autoOpen:false,
+            open: function(event,ui) {
+                $('.ui-dialog-titlebar-close', $(this).parent()).hide();
+            }
+        });
+
+        // initialize the plan chooser
+        var choose = chooseplan({
+            {% if not plan.name %}
+            closable: false,
+            {% endif %}
+            anonymous: {% if is_registered %}false{% else %}true{% endif %},
+            target: $('#difplanbtn'),
+            container: $('#DialogContainer'),
+            modal: true,
+            resizable: false,
+            table: $('#plan_table'),
+            helpText: $('#start_mapping_help'),
+            pager: $('#plan_table_pager'),
+            dataUrl: '/districtmapping/getplans/'
+        });
+
+        // initialize the print feature
+        var printer = printplan({
+            target: $('#print_btn'),
+            height: 850,
+            width: 1024,
+            plan: 0
+        });
+        printer.init();
+    {% if plan.name %}
+    {% comment %}
+
+    If a plan exists, then load the geographic and demographic information
+    about this plan for display in the sidebar menu and display the draw tab.
+
+    {% endcomment %}
+        $('#steps').tabs('select', '#step_draw');
+        // Export to shape menu option
+        var exportShape = districtfile({
+            target: $('#shapefile_btn'),
+            type: 'shape',
+            menu_icon: '{% static 'images/icon-shape-file.png' %}'
+        });
+        exportShape.init();
+
+        // Export to raw data menu option
+        var exportRaw = districtfile({
+            target: $('#rawdata_btn'),
+            type: 'index',
+            menu_icon: '{% static 'images/icon-raw-data.png' %}'
+        });
+        exportRaw.init();
+
+        // Load up the district index file checker whenever the
+        // appropriate tab is clicked.
+        var exportIndexFile = districtfile({
+            target: $('#districtIndexFileTarget'),
+            type: 'index'
+        });
+
+        $('#steps').tabs({ show: function(event, ui) {
+            if ($(this).tabs('option', 'selected') == 3) {
+                exportIndexFile.init();
+            }
+        }});
+
+        if (typeof(stats) == 'undefined') {
+            stats = statisticssets({}).init();
+        }
+
+        {% if plan.is_community %}
+        $('#steps').tabs('option', 'disabled', [2]);
+        {% endif %}
+
+        // Get the list of plans after all the other plan info has loaded
+        setTimeout(choose.init, 2000);
+    {% else %}
+        // Get the list of plans immediately
+        choose.init();
+        $('#steps').tabs('option', 'disabled', [ 1,2,3 ]);
+    {% endif %}
+
+    {% if plan.id %}
+        // initialize the reporting interface
+        var report = reports({
+            planId: {{plan.id}},
+            calculatorReports: {% autoescape off %}{{ calculator_reports }}{% endautoescape %}
+        }).init();
+    {% endif %}
+    });
+
+    $(document).ready(function() {
+        $('#steps').css('visibility', '');
+    })
+</script>
+  </body>
+</html>

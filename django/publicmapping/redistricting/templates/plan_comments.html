@@ -1,0 +1,53 @@
+{% load comments %}
+{% load i18n %}
+
+<div class="community_comments">
+{% for dscore in districtscores %}
+    <div class="districtComment {% cycle 'comm1' 'comm2' %}">
+        <form id="districtInfo{{ dscore.district.district_id }}">
+            <input type="hidden" name="pk" value="{{ dscore.district.id }}" />
+            <input type="text" class="infoLabel" name="label" value="{{ dscore.district.long_label }}" readonly="true" />
+            <div class="edit_district_info" districtid="{{ dscore.district.district_id }}">{% trans "Edit" %}</div>
+            <div class="district_type">
+                <h4>{% trans "Type/s:" %}</h4>
+                {% for forscore in dscore.scores %}
+                    {% with forscore.score as score %}
+                        {% if score.typetags %}
+                            <span class="infoType">{% for tag in score.typetags %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+                            <input type="hidden" class="infoType" name="type" value="{% for tag in score.typetags %}{{ tag }}{% if not forloop.last %},{% endif %}{% endfor %}"/>
+                        {% else %}
+                            <input type="hidden" class="infoType" name="type" value="" readonly="true" />
+                        {% endif %}
+                    {% endwith %}
+                {% endfor %}
+            </div>
+            {% get_comment_list for dscore.district as dcoms %}
+            <div class="district_comment">
+                <h4>{% trans "Comments:" %}</h4>
+                <div class="infoComment">{% for dcom in dcoms %}{{ dcom.comment }}{% endfor %}</div>
+            </div>
+            <div style="clear:both;height:0;line-height:0;">&nbsp;</div>
+        </form>
+    </div>
+{% endfor %}
+</div>
+<script type="text/javascript">
+$('.edit_district_info').each(function(idx,elem){
+    $(elem).click(function(evt){
+        var frm = $(elem.parentNode);
+        $('#id_label').val( frm.find('[name="label"]').val() );
+        $('#id_type').val( frm.find('[name="type"]').val().replace(new RegExp(',','g'),', ') );
+        $('#id_typelist').val( frm.find('[name="type"]').val().split(','));
+        $('#id_comment').val( frm.find('.infoComment').text() );
+        $('#id_district_pk').val( frm.find('[name="pk"]').val() );
+        $('#id_district_id').val( $(elem).attr('districtid') );
+
+        var h3 = $('#districtComment').children('h3');
+        $(h3[0]).text('1. Edit Community Label:');
+        $(h3[1]).text('2. Edit Community Type:');
+          
+        $('#districtComment').dialog({width: 400})  
+        $('#districtComment').dialog('open');
+    });
+});
+</script>
